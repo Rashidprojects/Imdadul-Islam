@@ -2,14 +2,13 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../lib/providers/AuthCOntext";
 
 const ProtectedRoute = ({ children }) => {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, loading } = useAuth()
 
-    // Redirect to admin-portal if not authenticated
-    if (!isAuthenticated) {
-        return <Navigate to="/admin-portal" replace />;
+    if (loading) {
+        return <div>Loading...</div>; // Show a loading spinner or similar
     }
 
-    return children;
+    return isAuthenticated ? children : <Navigate to="/admin-portal" />;
 };
 
 export default ProtectedRoute;

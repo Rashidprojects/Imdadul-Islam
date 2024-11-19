@@ -22,10 +22,17 @@ export const useLogin = (username, password) => {
             // Authenticate the user with the fetched email and provided password
             await loginWithEmailAndPassword(fetchedEmail, password);
             login()
+
+            // Set lastLoginTime in localStorage to current timestamp (in milliseconds)
+            const currentTime = Date.now(); // Get the current time in milliseconds
+            localStorage.setItem("lastLoginTime", currentTime);
+
             console.log('User logged in successfully');
+
         } catch (err) {
             if (err.message === 'Invalid username') {
                 setError('Invalid username');
+                
             } else if (err.message === 'Firebase: Error (auth/wrong-password).') {
                 setError('Incorrect password');
             } else {
