@@ -1,11 +1,24 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './App.css'
+import { BrowserRouter } from "react-router-dom";
+import Navbar from './components/Navbar';
+import AppRouter from './routes/AppRouter';
+import { AuthProvider } from './lib/providers/AuthCOntext';
 
 function App() {
 
+
+  const queryClient = new QueryClient();
+
   return (
-    <div>
-      <h1 className='text-green-500 text-3xl text-center'>Welcome to masjid</h1>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <BrowserRouter>
+          <Navbar />
+          <AppRouter />
+        </BrowserRouter>
+      </AuthProvider>
+    </QueryClientProvider>
   )
 }
 
