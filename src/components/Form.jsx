@@ -1,4 +1,4 @@
-const Table = () => {
+const Form = () => {
   return (
     <div className="bg-red-500">
         <div className="p-5 h-screen bg-gray-800">
@@ -109,4 +109,4 @@ const Table = () => {
   )
 }
 
-export default Table
+export default Form
