@@ -1,3 +1,4 @@
+import Pagination from "../../components/Pagination"
 import Table from "../../components/Table"
 
 const Dashboard = () => {
@@ -20,6 +21,7 @@ const Dashboard = () => {
 
         <div>
             <Table />
+            <Pagination />
         </div>
 
        </div>
