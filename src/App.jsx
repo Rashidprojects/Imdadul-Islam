@@ -7,6 +7,7 @@ import AppRouter from './routes/AppRouter';
 import { ToastProvider } from './lib/providers/ToastContext';
 import Toast from './components/Toast';
 import { SigninProvider } from './lib/providers/SigninContext';
+import { PaginationProvider } from './lib/providers/PaginationContext';
 
 function App() {
 
@@ -17,11 +18,13 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <SigninProvider>
         <ToastProvider>
-          <BrowserRouter>
-            <Navbar />
-            <Toast />
-            <AppRouter />
-          </BrowserRouter>
+          <PaginationProvider>
+            <BrowserRouter>
+              <Navbar />
+              <Toast />
+              <AppRouter />
+            </BrowserRouter>
+          </PaginationProvider>
         </ToastProvider>
       </SigninProvider>
     </QueryClientProvider>
