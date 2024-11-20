@@ -11,7 +11,9 @@ export default {
         secondary: "#626F47",
         light: "#FEFAE0",
         dark: "#F2EED7",
-        success: "#2ecc71"
+        success: "#2ecc71",
+        table1: "#f2f1eb",
+        table2: "#f0efed"
       }
     },
   },

@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { useToast } from '../lib/hooks/useToast';
 import { ToastContext } from '../lib/providers/ToastContext';
 
 // Dynamically assign class based on the variant

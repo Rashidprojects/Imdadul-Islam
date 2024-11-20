@@ -4,9 +4,9 @@ import './App.css'
 import { BrowserRouter } from "react-router-dom";
 import Navbar from './components/Navbar';
 import AppRouter from './routes/AppRouter';
-import { AuthProvider } from './lib/providers/AuthCOntext';
 import { ToastProvider } from './lib/providers/ToastContext';
 import Toast from './components/Toast';
+import { SigninProvider } from './lib/providers/SigninContext';
 
 function App() {
 
@@ -15,7 +15,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
+      <SigninProvider>
         <ToastProvider>
           <BrowserRouter>
             <Navbar />
@@ -23,7 +23,7 @@ function App() {
             <AppRouter />
           </BrowserRouter>
         </ToastProvider>
-      </AuthProvider>
+      </SigninProvider>
     </QueryClientProvider>
   )
 }
