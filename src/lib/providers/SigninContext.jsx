@@ -2,11 +2,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 
-const AuthContext = createContext();
+const SigninContext = createContext();
 
 const SESSION_TIMEOUT = 24 * 60 * 60 * 1000; // 1 hour in milliseconds
 
-export const AuthProvider = ({ children }) => {
+export const SigninProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
 
@@ -44,10 +44,10 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, loading, handleLogout, login }}>
+        <SigninContext.Provider value={{ isAuthenticated, loading, handleLogout, login }}>
             {children}
-        </AuthContext.Provider>
+        </SigninContext.Provider>
     );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(SigninContext);

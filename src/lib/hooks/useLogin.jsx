@@ -1,9 +1,9 @@
 import { useState, useContext } from "react";
 import { loginWithEmailAndPassword } from "../services/authService";
 import { fetchUserUidByUsername, fetchUserEmailByUid } from "../services/userService";
-import { useAuth } from "../providers/AuthCOntext";
 import { ToastContext } from "../providers/ToastContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../providers/SigninContext";
 
 export const useLogin = (username, password) => {
   const [error, setError] = useState('');
