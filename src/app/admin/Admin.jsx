@@ -1,10 +1,10 @@
 import Login from "../../components/Login"
-import Register from "../../components/Register"
+// import Register from "../../components/Register"
 
 const Admin = () => {
   return (
     <div>
-        <Register /> <br /><br />
+        {/* <Register /> <br /><br /> */}
         <Login />
     </div>
   )
