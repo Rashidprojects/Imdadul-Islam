@@ -47,19 +47,21 @@ const UserDataContext = createContext();
 export const UserDataProvider = ({ children }) => {
   const [state, dispatch] = useReducer(userReducer, initialState);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      dispatch({ type: SET_LOADING, payload: true });
-      try {
-        const users = await fetchFundData();
-        dispatch({ type: FETCH_USERS, payload: users });
-      } catch (error) {
-        dispatch({ type: SET_ERROR, payload: error.message });
-      }
-    };
+  const fetchUsers = async () => {
+    dispatch({ type: SET_LOADING, payload: true });
+    try {
+      const users = await fetchFundData();
+      dispatch({ type: FETCH_USERS, payload: users });
+    } catch (error) {
+      dispatch({ type: SET_ERROR, payload: error.message });
+    }
+  };
 
-    fetchUsers();
-  }, []);
+  useEffect(() => {
+    if (state.users.length === 0) {
+      fetchUsers();  // Fetch data only if `users` is empty (initial load)
+    }
+  }, [state.users.length]); 
 
   const updateUser = async (id, updatedData) => {
     try {
@@ -89,7 +91,7 @@ export const UserDataProvider = ({ children }) => {
 
   return (
     <UserDataContext.Provider
-      value={{ state, updateUser, deleteUser, setEditingUser }} // Add setEditingUser to the context
+      value={{ state, updateUser,  fetchUsers, deleteUser, setEditingUser }} // Add setEditingUser to the context
     >
       {children}
     </UserDataContext.Provider>
