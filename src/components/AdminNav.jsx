@@ -21,7 +21,11 @@ const AdminNav = ({ currentSection }) => {
         {/* Navigation Section */}
         <div className="flex justify-between items-center w-full px-7">
           <div className="flex justify-center items-center text-[18px] font-medium">
-            <button className="text-light">Dashboard</button>
+            <button className="text-light"
+                onClick={() => navigate('/user-dashboard')}
+            >
+                Dashboard
+            </button>
 
             {/* Render current section dynamically */}
             {currentSection && (

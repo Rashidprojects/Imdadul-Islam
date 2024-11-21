@@ -5,7 +5,7 @@ import { createContext, useReducer, useContext } from 'react';
 const initialState = {
   username: '',
   houseNumber: '',
-  areaCode: '',
+  areaCode: 'default',
   address: '',
   mobile: '',
   totalAmount: '',
@@ -50,6 +50,7 @@ const FormContext = createContext();
 // Context provider component
 export const FormProvider = ({ children }) => {
   const [state, dispatch] = useReducer(formContextReducer, initialState);
+
 
   return (
     <FormContext.Provider value={{ state, dispatch }}>

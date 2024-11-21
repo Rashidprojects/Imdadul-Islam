@@ -1,22 +1,31 @@
+import { useEffect } from 'react';
+import { useForm } from '../lib/providers/FormContext';
 import { useUserData } from '../lib/providers/UserDataContext';
 import { useNavigate } from 'react-router-dom';
 
 const CheckData = () => {
-  const { state, setEditingUser, deleteUser } = useUserData(); // Make sure deleteUser is retrieved from context
+  const { state: formState } = useForm(); // Form state
+  const { state: userState, fetchUsers, setEditingUser, deleteUser } = useUserData(); // User data context
   const navigate = useNavigate();
 
-  if (state.loading) return <p>Loading...</p>;
-  if (state.error) return <p style={{ color: 'red' }}>{state.error}</p>;
+  useEffect(() => {
+    // Trigger fetchUsers when `formState` changes
+    fetchUsers();
+  }, [formState]); // Dependencies to monitor (adjust based on your requirement)
+
+  if (userState.loading) return <p>Loading...</p>;
+  if (userState.error) return <p style={{ color: 'red' }}>{userState.error}</p>;
 
   return (
     <div>
       <h2>Submitted Data</h2>
-      {state.users.length === 0 ? (
+      {userState.users.length === 0 ? (
         <p>No data found.</p>
       ) : (
         <table border="1">
           <thead>
             <tr>
+              <th>SI No</th>
               <th>Username</th>
               <th>House Number</th>
               <th>Area Code</th>
@@ -27,8 +36,9 @@ const CheckData = () => {
             </tr>
           </thead>
           <tbody>
-            {state.users.map((user) => (
+            {userState.users.map((user, index) => (
               <tr key={user.id}>
+                <td>{user?.siNo}</td> {/* Display serial number */}
                 <td>{user?.username}</td>
                 <td>{user?.houseNumber}</td>
                 <td>{user?.areaCode}</td>
@@ -46,7 +56,7 @@ const CheckData = () => {
                   </button>
                   <br />
                   <button onClick={() => deleteUser(user.id)}>Delete</button>
-                  </td>
+                </td>
               </tr>
             ))}
           </tbody>
