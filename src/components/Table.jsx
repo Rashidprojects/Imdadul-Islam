@@ -9,7 +9,7 @@ const Table = () => {
   // Effect to set the total number of items when data is available
   useEffect(() => {
     setTotalItems(TableData.length); // Assuming TableData is available and contains all items
-  }, [setTotalItems]);
+  }, []);
 
   // Get the data for the current page
   const indexOfLastItem = currentPage * itemsPerPage;
