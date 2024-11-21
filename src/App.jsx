@@ -8,6 +8,8 @@ import { ToastProvider } from './lib/providers/ToastContext';
 import Toast from './components/Toast';
 import { SigninProvider } from './lib/providers/SigninContext';
 import { PaginationProvider } from './lib/providers/PaginationContext';
+import { FormProvider } from './lib/providers/FormContext';
+import { UserDataProvider } from './lib/providers/UserDataContext';
 
 function App() {
 
@@ -19,11 +21,14 @@ function App() {
       <SigninProvider>
         <ToastProvider>
           <PaginationProvider>
-            <BrowserRouter>
-              <Navbar />
-              <Toast />
-              <AppRouter />
-            </BrowserRouter>
+            <FormProvider>
+              <UserDataProvider>
+                <BrowserRouter>
+                  <Toast />
+                  <AppRouter />
+                </BrowserRouter>
+              </UserDataProvider>
+            </FormProvider>
           </PaginationProvider>
         </ToastProvider>
       </SigninProvider>

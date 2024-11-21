@@ -18,8 +18,7 @@ export const useLogin = (username, password) => {
 
       // Step 1: Fetch the UID based on the username
       const userId = await fetchUserUidByUsername(username);
-      console.log('username: ', username);
-      console.log('uid is: ', userId);
+    
 
       if (!userId) {
         setError('Username not found');

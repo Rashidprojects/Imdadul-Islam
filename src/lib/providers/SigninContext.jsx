@@ -37,6 +37,7 @@ export const SigninProvider = ({ children }) => {
     }, []);
 
     const login = () => setIsAuthenticated(true);
+    
     const handleLogout = async () => {
         await signOut(auth);
         setIsAuthenticated(false);
