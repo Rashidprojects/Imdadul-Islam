@@ -83,6 +83,13 @@ const EditData = () => {
           onChange={handleChange}
         />
       </div>
+
+      <h3>Installments:</h3>
+                <ul>
+                {formData.installments.map((inst, index) => (
+                    <li key={index}>{inst.name} - {inst.date} - {inst.receiptNo} - {inst.receivedAmount}</li>
+                ))}
+        </ul>
       <button type="submit">Update</button>
     </form>
   );

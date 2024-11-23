@@ -11,6 +11,8 @@ const initialState = {
   totalAmount: '',
   installments: [],
   installment: { name: '', date: '', receiptNo: '', receivedAmount: '' }, // Added receivedAmount
+  extraUsers: [],
+  extraUser: { name: '', date: '', relation: '', receivedAmount: '' },
   amountPaid: '',
   isLoading: false,
   error: null,
@@ -20,6 +22,10 @@ const initialState = {
 const SET_FIELD = 'SET_FIELD';
 const SET_INSTALLMENT = 'SET_INSTALLMENT';
 const ADD_INSTALLMENT = 'ADD_INSTALLMENT';
+const EDIT_INSTALLMENT = 'EDIT_INSTALLMENT';
+const SET_EXTRAUSER = 'SET_EXTRAUSER';
+const ADD_EXTRAUSER = 'ADD_EXTRAUSER';
+const EDIT_EXTRAUSER = 'EDIT_EXTRAUSER';
 const RESET_FORM = 'RESET_FORM';
 const SET_LOADING = 'SET_LOADING';
 const SET_ERROR = 'SET_ERROR';
@@ -30,9 +36,25 @@ const formContextReducer = (state, action) => {
     case SET_FIELD:
       return { ...state, [action.field]: action.value };
     case SET_INSTALLMENT:
-      return { ...state, installment: { ...state.installment, [action.name]: action.value } };
+        return { ...state, installment: { ...state.installment, [action.name]: action.value } };
     case ADD_INSTALLMENT:
-      return { ...state, installments: [...state.installments, state.installment], installment: { name: '', date: '', receiptNo: '', receivedAmount: '' } }; // Reset receivedAmount
+        return { ...state, installments: [...state.installments, state.installment], installment: { name: '', date: '', receiptNo: '', receivedAmount: '' } }; 
+    case EDIT_INSTALLMENT:
+    return {
+        ...state,
+        installment: state.installments[action.index],
+        installments: state.installments.filter((_, i) => i !== action.index), // Remove the edited installment temporarily
+    }; 
+    case SET_EXTRAUSER:
+      return { ...state, extraUser: { ...state.extraUser, [action.name]: action.value } };
+    case ADD_EXTRAUSER:
+        return { ...state, extraUsers: [...state.extraUsers, state.extraUser], extraUser: { name: '', date: '', relation: '', receivedAmount: '' } }; 
+    case EDIT_EXTRAUSER:
+    return {
+        ...state,
+        installment: state.installments[action.index],
+        installments: state.installments.filter((_, i) => i !== action.index), // Remove the edited installment temporarily
+    };
     case RESET_FORM:
       return initialState;
     case SET_LOADING:

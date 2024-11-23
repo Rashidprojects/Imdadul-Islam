@@ -20,7 +20,7 @@ const Table = () => {
   // slice data => slice(5, 10) o/p => [6,7,8,9,10]
 
   return (
-    <div className="overflow-auto rounded-lg shadow">
+    <div className="overflow-auto rounded-lg shadow mx-5">
       <table className="w-full">
         <thead className="bg-primary text-light border-2 border-primary ">
           <tr>
