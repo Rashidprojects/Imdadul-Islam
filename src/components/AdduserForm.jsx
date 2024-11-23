@@ -14,7 +14,6 @@ const AdduserForm = () => {
   const [isInstallment, setIsInstallment] = useState(false)
   const [isExtraUser, setISExtraUser] = useState(false)
 
-  
 
   // Handlers for form fields
   const handleFieldChange = (e) => {
@@ -100,7 +99,7 @@ const AdduserForm = () => {
   return (
     <div className='bg-primary '>
       <AdminNav currentSection="Add User" />
-      <div className='bg-light pb-36 rounded-xl mx-7 pt-7 sm:px-16 md:px-24 flex flex-col items-center'>
+      <div className='bg-light pb-36 rounded-xl pt-7 mx-2 flex flex-col items-center'>
         <div className='text-3xl font-semibold text-secondary pb-3'>
           <h1 className='text-center'>Add User Details</h1>
         </div>
@@ -293,7 +292,7 @@ const AdduserForm = () => {
                         </FormControl>
 
                   </div>
-                  <div className='w-[50%]'>
+                  <div className='w-[46%]'>
                     <label className='text-[15px] md:text-[20px]'>Installment date</label>
                     <input
                       className='w-full border px-1 border-secondary text-secondary rounded-md bg-light py-2 font-medium text-[14px] md:text-[20px] placeholder:text-primary placeholder:text-[13px]'
@@ -480,3 +479,4 @@ const AdduserForm = () => {
 };
 
 export default AdduserForm;
+

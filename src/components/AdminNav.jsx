@@ -19,8 +19,8 @@ const AdminNav = ({ currentSection }) => {
         </div>
 
         {/* Navigation Section */}
-        <div className="flex justify-between items-center w-full px-7">
-          <div className="flex justify-center items-center text-[18px] font-medium">
+        <div className="flex justify-between items-center w-full pl-2">
+          <div className="flex justify-center items-center text-[14px] sm:text-[18px] font-medium">
             <button className="text-light"
                 onClick={() => navigate('/user-dashboard')}
             >
@@ -29,15 +29,15 @@ const AdminNav = ({ currentSection }) => {
 
             {/* Render current section dynamically */}
             {currentSection && (
-              <>
-                <IoIosArrowForward className="text-table1" />
-                <p className="text-dark">{currentSection}</p>
-              </>
+              <div className="flex justify-center items-center relative">
+                <IoIosArrowForward className="text-table1 text-[14px] top-1 " />
+                <p className="text-dark text-[10px] sm:text-[14px]">{currentSection}</p>
+              </div>
             )}
           </div>
 
           {/* Logout Button */}
-          <div className="pr-3 bg-red-600 text-light px-3 py-1 rounded-lg text-[20px] font-medium">
+          <div className="mr-2 bg-red-600 text-light px-3 py-1 rounded-md sm:rounded-lg text-[14px] sm:text-[20px] font-medium">
             <button onClick={() => { handleLogout(); navigate('/admin-portal') }}>Logout</button>
           </div>
         </div>
