@@ -7,10 +7,12 @@ import '../../src/App.css';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { useState } from 'react';
 
 const AdduserForm = () => {
   const { state, dispatch } = useForm();
-
+  const [isInstallment, setIsInstallment] = useState(false)
+  const [isExtraUser, setISExtraUser] = useState(false)
 
   
 
@@ -28,7 +30,6 @@ const AdduserForm = () => {
 
   const handleAddInstallment = () => {
     const { name, date, receiptNo, receivedAmount } = state.installment;
-    console.log('name: ', name + " date:", date + ' receiptNo : ', receiptNo + ' receivedAmount :', receivedAmount);
 
     if (!name || !date || !receiptNo || !receivedAmount) {
       alert('Please fill out all the fields.');
@@ -36,17 +37,43 @@ const AdduserForm = () => {
     }
 
     dispatch({ type: 'ADD_INSTALLMENT' });
+    setIsInstallment(false)
   };
+
+  const handleEditInstallment = (index) => {
+    dispatch({ type: 'EDIT_INSTALLMENT', index });
+    setIsInstallment(true)
+  };
+
+  // Extra user data manage
+  const handleExtraUserChange = (e) => {
+    const { name, value } = e.target;
+    console.log(`Updating ExtraUser: ${name} = ${value}`);
+    dispatch({ type: 'SET_EXTRAUSER', name, value });
+  };
+
+  const handleAddExtraUser = () => {
+    const { name, date, relation, receivedAmount } = state.extraUser;
+
+    if (!name || !date || !relation || !receivedAmount) {
+      alert('Please fill out all the extra user fields.');
+      return;
+    }
+
+    dispatch({ type: 'ADD_EXTRAUSER' })
+  }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch({ type: 'SET_LOADING', value: true });
     dispatch({ type: 'SET_ERROR', value: null });
 
-    let installmentsToSave = [];
-    if (state.amountPaid < state.totalAmount) {
-      installmentsToSave = state.installments;
-    }
+    let installmentsToSave = [];    
+    installmentsToSave = state.installments;
+
+    let extrausersToSave = [];
+    extrausersToSave = state.extraUsers;
 
     const formData = {
       username: state.username,
@@ -56,6 +83,7 @@ const AdduserForm = () => {
       mobile: state.mobile,
       totalAmount: state.totalAmount,
       installments: installmentsToSave,
+      extraUsers: extrausersToSave
     };
 
     try {
@@ -160,15 +188,7 @@ const AdduserForm = () => {
                     </div>
                     <div className='w-[50%] '>
                         <label className='text-[15px] md:text-[20px]'> Total amount</label>
-                        {/* 
-                    <NumericFormat
-                      thousandSeparator={true}
-                      name="receivedAmount"
-                      placeholder='Example: 50 000'
-                      value={state.installment.receivedAmount}
-                      onChange={handleInstallmentChange}
-                    />
-                 */}
+                        
                         <NumericFormat
                         className='w-full border border-secondary text-secondary rounded-md bg-dark px-3 py-2 font-medium text-[15px] md:text-[20px] placeholder:text-primary placeholder:text-[13px] placeholder:sm:text-[16px]'
                         thousandSeparator={true}
@@ -183,9 +203,28 @@ const AdduserForm = () => {
                 
             </div>
 
+                {/* handle buttons */}
+            <div className='flex justify-center items-center pt-3 gap-3'>
+                <button
+                  className='bg-secondary text-light rounded-md text-center p-2 '
+                  type="button"
+                  onClick= {() => setIsInstallment(!isInstallment)}
+                >
+                  Add installment
+                </button>
+
+                <button
+                  className='bg-secondary text-light rounded-md text-center p-2 '
+                  type="button"
+                  onClick={() => setISExtraUser(!isExtraUser)}
+                >
+                  Add extra user
+                </button>
+              </div>
+
 
           {/* Installment Div Start Here.... */}
-          <div className='flex flex-col justify-center items-center'>
+          <div className={`flex-col justify-center items-center ${isInstallment ? 'flex' : 'hidden' } `}>
             <div className='flex justify-start w-[75%] sm:w-full items-start'>
               <label className='text-start text-[15px] md:text-[20px]'>Add Installments</label>
             </div>
@@ -266,7 +305,7 @@ const AdduserForm = () => {
                   </div>
                 </div>
 
-                <div className='w-full flex gap-3'>
+                <div className='w-full flex gap-3 '>
                   <div className='w-[50%]'>
                     <label className='text-[15px] md:text-[20px]'>Receipt no</label>
                     <input
@@ -299,38 +338,141 @@ const AdduserForm = () => {
                   type="button"
                   onClick={handleAddInstallment}
                 >
-                  Add installment
+                  Add Installment
                 </button>
               </div>
             </div>
           </div>
           {/* Installment Div Ends Here.... */}
 
-          <div>
+          {/* Extra user Div Starts Here... */}
+          <div className={`flex-col justify-center items-center ${isExtraUser ? 'flex' : 'hidden' } pt-5`}>
+            <div className='flex justify-start w-[75%] sm:w-full items-start'>
+              <label className='text-start text-[15px] md:text-[20px]'>Add Extra User</label>
+            </div>
+            <div className='w-[75%] sm:w-full flex flex-col border border-primary py-5 px-2 sm:px-8 bg-dark rounded-md'>
+                <div className='w-full flex flex-col gap-3 sm:flex-row  '>
+                    <div className='w-full sm:w-[50%] gap-3 flex '>
+                        <div className='w-[50%]'>
+                            <label className='text-[15px] md:text-[20px]'>Enter user name</label>
+                            <input
+                            className='w-full border border-secondary text-secondary rounded-md bg-light px-3 py-2 font-medium text-[15px] md:text-[20px] placeholder:text-primary placeholder:text-[13px] placeholder:sm:text-[16px]'
+                            type="text"
+                            name="name"
+                            placeholder='Example: Ahamed'
+                            value={state.extraUser.name}
+                            onChange={(e) => {
+                            dispatch({
+                                type: 'SET_EXTRAUSER',
+                                name: 'name',
+                                value: e.target.value,
+                            });
+                            }}
+                            />
+                        </div>
+
+                        <div className='w-[50%]'>
+                            <label className='text-[15px] md:text-[20px]'>Enter Date</label>
+                            <input
+                            className='w-full border border-secondary text-secondary rounded-md bg-light px-3 py-2 font-medium text-[15px] md:text-[20px] placeholder:text-primary placeholder:text-[13px] placeholder:sm:text-[16px]'
+                            type="date"
+                            name="date"
+                            value={state.extraUser.date}
+                            onChange={handleExtraUserChange}
+                            />
+                        </div>
+                    </div>
+                    
+                    <div className='w-full sm:w-[50%] gap-3 flex '>
+                        <div className='w-[50%] '>
+                            <label className='text-[15px] md:text-[20px]'>Relation</label>
+                            <input
+                            className='w-full border border-secondary text-secondary rounded-md bg-light px-3 py-2 font-medium text-[15px] md:text-[20px] placeholder:text-primary placeholder:text-[13px] placeholder:sm:text-[16px]'
+                            type='text'
+                            name="relation"
+                            placeholder='Example: Father'
+                            value={state.extraUser.relation}
+                            onChange={handleExtraUserChange}
+                            />   
+                        </div>
+                        <div className='w-[50%]'>
+                            <label className='text-[15px] md:text-[20px]'>Received amount</label>
+                            <NumericFormat
+                            className='w-full border border-secondary text-secondary rounded-md bg-light px-3 py-2 font-medium text-[15px] md:text-[20px] placeholder:text-primary placeholder:text-[13px] placeholder:sm:text-[16px]'
+                            thousandSeparator={true}
+                            name="receivedAmount"
+                            placeholder='Example: 50,000'
+                            value={state.extraUser.receivedAmount}
+                            onChange={handleExtraUserChange}
+                            />   
+                        </div>
+                    </div>
+                </div>
+                <div className='flex justify-center pt-7 gap-4' >
+                    <button
+                        className='bg-secondary text-light p-3 rounded-md text-center'
+                        onClick={handleAddExtraUser}
+                        >
+                        Include Extra user
+                    </button>
+                </div>
+            </div>
+          </div>
+            {/* Extra user Div Ends Here... */}
+
+            {/* installments display */}
+            <div>
+             { state.installments.length > 0 && <>           
                 <h3>Installments:</h3>
                 <ul>
                 {state.installments.map((inst, index) => (
+                  <>
                     <li key={index}>{inst.name} - {inst.date} - {inst.receiptNo} - {inst.receivedAmount}</li>
+                    <button
+                        type='button'
+                        className='bg-primary text-light px-3 py-2 rounded-md font-medium text-[15px] md:text-[18px]'
+                        onClick={() => handleEditInstallment(index)}
+                    >
+                        Edit
+                    </button>
+                  </>
                 ))}
                 </ul>
+             </> 
+             } 
             </div>
 
-
+             {/* extra user data */}
+             <div>
+             { state.extraUsers.length > 0 && <>           
+                <h3>Installments:</h3>
+                <ul>
+                {state.extraUsers.map((extra, index) => (
+                  <>
+                    <li key={index}>{extra.name} - {extra.date} - {extra.relation} - {extra.receivedAmount}</li>
+                    <button
+                        type='button'
+                        className='bg-primary text-light px-3 py-2 rounded-md font-medium text-[15px] md:text-[18px]'
+                        onClick={() => handleEditInstallment(index)}
+                    >
+                        Edit
+                    </button>
+                  </>
+                ))}
+                </ul>
+             </> 
+             } 
+            </div>
 
           <div className='flex justify-center pt-4 gap-4' >
-          <button
-              className='bg-primary text-dark p-3 rounded-md text-center'
-            >
-               Include Extra user
-            </button>
-
             <button
               type="submit"
-              className='bg-primary text-dark p-3 rounded-md text-center'
+              className='bg-secondary text-dark p-3 rounded-md text-center'
             >
               Add user
             </button>
           </div>
+
         </form>
       </div>
     </div>
