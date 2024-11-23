@@ -8,12 +8,14 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useState } from 'react';
+import ExtraDataTable from './ExtraDataTable';
 
 const AdduserForm = () => {
   const { state, dispatch } = useForm();
   const [isInstallment, setIsInstallment] = useState(false)
-  const [isExtraUser, setISExtraUser] = useState(false)
-
+  const [isExtraUser, setIsExtraUser] = useState(false)
+  const [editIndex, setEditIndex] = useState(false);
+  const [isEditExtraUser, setIsEditExtraUser] = useState(false)
 
   // Handlers for form fields
   const handleFieldChange = (e) => {
@@ -37,9 +39,12 @@ const AdduserForm = () => {
 
     dispatch({ type: 'ADD_INSTALLMENT' });
     setIsInstallment(false)
+    setEditIndex(false)
   };
 
   const handleEditInstallment = (index) => {
+    console.log("Editing installment at index:", index);
+    setEditIndex(true)
     dispatch({ type: 'EDIT_INSTALLMENT', index });
     setIsInstallment(true)
   };
@@ -58,12 +63,22 @@ const AdduserForm = () => {
       alert('Please fill out all the extra user fields.');
       return;
     }
-
+    setIsEditExtraUser(false)
     dispatch({ type: 'ADD_EXTRAUSER' })
   }
 
+  const handleEditExtraUser = (index) => {
+    console.log("Editing extra user at index:", index);
+    setIsEditExtraUser(true)
+    dispatch({ type: 'EDIT_EXTRAUSER', index });
+  };
+
 
   const handleSubmit = async (e) => {
+    if (!state.username || !state.houseNumber || !state.areaCode) {
+        alert('Please fill out all the extra user fields.');
+      return;
+    }
     e.preventDefault();
     dispatch({ type: 'SET_LOADING', value: true });
     dispatch({ type: 'SET_ERROR', value: null });
@@ -80,7 +95,7 @@ const AdduserForm = () => {
       areaCode: state.areaCode,
       address: state.address,
       mobile: state.mobile,
-      totalAmount: state.totalAmount,
+      totalAmount: state.totalAmount, 
       installments: installmentsToSave,
       extraUsers: extrausersToSave
     };
@@ -99,11 +114,11 @@ const AdduserForm = () => {
   return (
     <div className='bg-primary '>
       <AdminNav currentSection="Add User" />
-      <div className='bg-light pb-36 rounded-xl pt-7 mx-2 flex flex-col items-center'>
+      <div className='bg-light pb-36 rounded-xl pt-7 mx-2 sm:mx-7 flex flex-col items-center'>
         <div className='text-3xl font-semibold text-secondary pb-3'>
           <h1 className='text-center'>Add User Details</h1>
         </div>
-        <form onSubmit={handleSubmit} className='pt-1 md:pt-10 sm:w-[85%]'>
+        <form  className='pt-1 md:pt-10 sm:w-[85%]'>
           <div className='flex flex-col sm:flex-row justify-center items-center gap-4 my-4'>
             <div className='w-[75%] sm:w-full'>
               <label className='text-[15px] md:text-[20px]'>Enter user name</label> <br />
@@ -215,16 +230,17 @@ const AdduserForm = () => {
                 <button
                   className='bg-secondary text-light rounded-md text-center p-2 '
                   type="button"
-                  onClick={() => setISExtraUser(!isExtraUser)}
+                  onClick={() => setIsExtraUser(!isExtraUser)}
                 >
                   Add extra user
                 </button>
               </div>
 
 
+          
           {/* Installment Div Start Here.... */}
           <div className={`flex-col justify-center items-center ${isInstallment ? 'flex' : 'hidden' } `}>
-            <div className='flex justify-start w-[75%] sm:w-full items-start'>
+            <div className='flex justify-start w-[75%] sm:w-full items-start pl-20'>
               <label className='text-start text-[15px] md:text-[20px]'>Add Installments</label>
             </div>
             <div className='w-[75%] sm:w-full flex flex-col border border-primary py-5 px-2 sm:px-8 bg-dark rounded-md'>
@@ -278,11 +294,14 @@ const AdduserForm = () => {
                         >
                             <MenuItem value="default">--Select an option--</MenuItem>
 
-                            {state.installments.length === 0 && (
-                            <MenuItem value="First installment">Installment 1</MenuItem>
+                            {!editIndex && state.installments.length === 0 ? ( 
+                                <MenuItem value="Installment 1">Installment 1</MenuItem>
+                                )  :  (
+                                <MenuItem value="Installment 1">Installment 1</MenuItem>
+
                             )}
 
-                            {state.installments.length > 0 && state.installments.length < 3 && (
+                            { state.installments.length > 0 && state.installments.length < 5 && (
                             <MenuItem value={`Installment ${state.installments.length + 1}`}>
                                 Installment {state.installments.length + 1}
                             </MenuItem>
@@ -292,7 +311,7 @@ const AdduserForm = () => {
                         </FormControl>
 
                   </div>
-                  <div className='w-[46%]'>
+                  <div className='w-[50%]'>
                     <label className='text-[15px] md:text-[20px]'>Installment date</label>
                     <input
                       className='w-full border px-1 border-secondary text-secondary rounded-md bg-light py-2 font-medium text-[14px] md:text-[20px] placeholder:text-primary placeholder:text-[13px]'
@@ -407,36 +426,26 @@ const AdduserForm = () => {
                         </div>
                     </div>
                 </div>
-                <div className='flex justify-center pt-7 gap-4' >
-                    <button
-                        className='bg-secondary text-light p-3 rounded-md text-center'
-                        onClick={handleAddExtraUser}
-                        >
-                        Include Extra user
-                    </button>
-                </div>
+                <div className='flex justify-center items-center pt-3'>
+                <button
+                  className='bg-secondary text-light rounded-md text-center p-2 '
+                  type="button"
+                  onClick={handleAddExtraUser}
+                >
+                  Add Extra User
+                </button>
+              </div>
             </div>
           </div>
             {/* Extra user Div Ends Here... */}
 
             {/* installments display */}
-            <div>
+            <div className='w-full '>
              { state.installments.length > 0 && <>           
-                <h3>Installments:</h3>
-                <ul>
-                {state.installments.map((inst, index) => (
-                  <>
-                    <li key={index}>{inst.name} - {inst.date} - {inst.receiptNo} - {inst.receivedAmount}</li>
-                    <button
-                        type='button'
-                        className='bg-primary text-light px-3 py-2 rounded-md font-medium text-[15px] md:text-[18px]'
-                        onClick={() => handleEditInstallment(index)}
-                    >
-                        Edit
-                    </button>
-                  </>
-                ))}
-                </ul>
+              <h3 className='ml-16 sm:ml-0'>Installments:</h3>
+              <ul>
+                <ExtraDataTable onEditInstallment={handleEditInstallment}  onEditExtraUser={handleEditExtraUser} />
+              </ul>
              </> 
              } 
             </div>
@@ -444,7 +453,7 @@ const AdduserForm = () => {
              {/* extra user data */}
              <div>
              { state.extraUsers.length > 0 && <>           
-                <h3>Installments:</h3>
+                <h3 className='ml-16 sm:ml-0'>Extra users</h3>
                 <ul>
                 {state.extraUsers.map((extra, index) => (
                   <>
@@ -466,6 +475,7 @@ const AdduserForm = () => {
           <div className='flex justify-center pt-4 gap-4' >
             <button
               type="submit"
+              onClick={handleSubmit}
               className='bg-secondary text-dark p-3 rounded-md text-center'
             >
               Add user

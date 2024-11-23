@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useUserData } from '../lib/providers/UserDataContext';
+import { NumericFormat } from 'react-number-format';
+import { useForm } from '../lib/providers/FormContext';
 
 const EditData = () => {
   const { state, updateUser } = useUserData();
+  const { state: formState, dispatch } = useForm();
+
   const [formData, setFormData] = useState(null);
 
   // Set form data when editingUser is available
@@ -25,6 +29,18 @@ const EditData = () => {
     }
   };
 
+  const handleEditInstallment = (index) => {
+    dispatch({ type: 'EDIT_INSTALLMENT', index });
+  };
+
+
+  if (formData) {
+    console.log('installments [0] : ', formData.installments[0]); 
+    console.log('total amount : ', formData.totalAmount);
+  }
+ 
+
+  
   if (!formData) return <p>Loading...</p>;
 
   return (
@@ -76,20 +92,39 @@ const EditData = () => {
       </div>
       <div>
         <label>Total Amount:</label>
-        <input
-          type="number"
+        <NumericFormat
           name="totalAmount"
           value={formData?.totalAmount}
           onChange={handleChange}
         />
       </div>
 
-      <h3>Installments:</h3>
-                <ul>
-                {formData.installments.map((inst, index) => (
-                    <li key={index}>{inst.name} - {inst.date} - {inst.receiptNo} - {inst.receivedAmount}</li>
-                ))}
+      {formData && console.log(formData.installments)}  {/* Add this to log the whole array */}
+        <h3>Installments:</h3>
+        <ul>
+        {
+            formData && formData.installments.map((inst, index) => (
+              <>
+                <li key={index}>
+                    {inst.name} - {inst.date} - {inst.receiptNo} - {inst.receivedAmount}
+                </li>
+                <button
+                    type='button'
+                    className='bg-primary text-light px-3 py-2 rounded-md font-medium text-[15px] md:text-[18px]'
+                    onClick={() => handleEditInstallment(index)}
+                >
+                    Edit
+                </button>
+              </>
+            ))
+        }
         </ul>
+
+
+            
+            
+        
+
       <button type="submit">Update</button>
     </form>
   );

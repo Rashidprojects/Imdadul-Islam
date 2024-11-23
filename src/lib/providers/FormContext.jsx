@@ -52,8 +52,8 @@ const formContextReducer = (state, action) => {
     case EDIT_EXTRAUSER:
     return {
         ...state,
-        installment: state.installments[action.index],
-        installments: state.installments.filter((_, i) => i !== action.index), // Remove the edited installment temporarily
+        installment: state.extraUsers[action.index],
+        installments: state.extraUsers.filter((_, i) => i !== action.index), // Remove the edited installment temporarily
     };
     case RESET_FORM:
       return initialState;
