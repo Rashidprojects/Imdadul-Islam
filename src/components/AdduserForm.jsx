@@ -121,7 +121,7 @@ const AdduserForm = () => {
   console.log('current load status : ', loading);
   
   return (
-    <div className={` bg-primary ${ isExtraUser && isInstallment ? 'h-auto' : 'h-screen' } pb-3`}>
+    <div className={` bg-primary ${ isExtraUser || isInstallment ? 'h-auto' : 'h-screen' } pb-3`}>
       {/* loading animation  */}
       <div className='text-2xl absolute z-20 left-[48%]'>
             {
@@ -132,7 +132,7 @@ const AdduserForm = () => {
         </div>
 
       <AdminNav currentSection="Add User" />
-      <div className={`bg-light ${ isExtraUser && isInstallment ? 'h-auto' : 'h-[90%]' } pb-36 rounded-xl pt-7 mx-2 sm:mx-7 flex flex-col items-center ${loading ? 'blur-sm' : ''} `}>
+      <div className={`bg-light ${ isExtraUser || isInstallment ? 'h-auto' : 'h-[90%]' } pb-36 rounded-xl pt-7 mx-2 sm:mx-7 flex flex-col items-center ${loading ? 'blur-sm' : ''} `}>
         <div className='text-3xl font-semibold text-secondary pb-3'>
           <h1 className='text-center'>Add User Details</h1>
         </div>
