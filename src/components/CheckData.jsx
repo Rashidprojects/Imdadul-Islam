@@ -53,8 +53,8 @@ const CheckData = () => {
                 <td>{user?.username}</td>
                 <td>{user?.houseNumber}</td>
                 <td>{user?.areaCode}</td>
-                <td>{user?.address}</td>
-                <td>{user.mobile}</td>
+                <td>{user?.address? user.address : '-'}</td>
+                <td>{user.mobile ? user.mobile : '-'}</td>
                 <td>{user.totalAmount}</td>
                 <td>
                   <button

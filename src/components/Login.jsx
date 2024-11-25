@@ -38,8 +38,8 @@ const Login = () => {
                 </span>
                 <h3 className="text-center text-[22px] sm:text-2xl font-semibold gap-1 pb-3 text-secondary">
                     ഇംദാദുൽ ഇസ്ലാം <br />
-                    <span className="text-[18px] sm:text-[20px] leading-8 block">
-                    പടിക്കൽ മഹല്ല് ജമാഅത് കമ്മിറ്റി
+                    <span className="text-[18px] sm:text-[20px] leading-7 sm:leading-9 block">
+                    പടിക്കൽ മഹല്ല് ജമാഅത്ത് കമ്മിറ്റി
                     </span>
                 </h3>
                 <h2 className="text-3xl sm:text-5xl font-bold text-primary">Admin Login</h2>
