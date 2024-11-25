@@ -9,13 +9,19 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useState } from 'react';
 import ExtraDataTable from './ExtraDataTable';
+import InstallmentTable from './InstallmentTable';
+import Loading from './Loading';
+import { useNavigate } from 'react-router-dom';
 
 const AdduserForm = () => {
   const { state, dispatch } = useForm();
+  const navigate = useNavigate()
+
+
   const [isInstallment, setIsInstallment] = useState(false)
   const [isExtraUser, setIsExtraUser] = useState(false)
   const [editIndex, setEditIndex] = useState(false);
-  const [isEditExtraUser, setIsEditExtraUser] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   // Handlers for form fields
   const handleFieldChange = (e) => {
@@ -63,13 +69,13 @@ const AdduserForm = () => {
       alert('Please fill out all the extra user fields.');
       return;
     }
-    setIsEditExtraUser(false)
+    setIsExtraUser(false)
     dispatch({ type: 'ADD_EXTRAUSER' })
   }
 
   const handleEditExtraUser = (index) => {
     console.log("Editing extra user at index:", index);
-    setIsEditExtraUser(true)
+    setIsExtraUser(true)
     dispatch({ type: 'EDIT_EXTRAUSER', index });
   };
 
@@ -99,22 +105,34 @@ const AdduserForm = () => {
       installments: installmentsToSave,
       extraUsers: extrausersToSave
     };
+    setLoading(true)
 
     try {
       await submitFundData(formData);
-      alert('Data submitted successfully!');
       dispatch({ type: 'RESET_FORM' });
     } catch (error) {
       dispatch({ type: 'SET_ERROR', value: error.message });
     } finally {
-      dispatch({ type: 'SET_LOADING', value: false });
+      setLoading(false)
+      navigate('/user-dashboard')
     }
   };
 
+  console.log('current load status : ', loading);
+  
   return (
-    <div className='bg-primary '>
+    <div className={` bg-primary ${ !isExtraUser || !isInstallment ? 'h-screen' : '' } `}>
+      {/* loading animation  */}
+      <div className='text-2xl absolute z-20 left-[48%]'>
+            {
+                loading ? (
+                    <Loading  className = "absolute" />
+                ) : ''
+            }
+        </div>
+
       <AdminNav currentSection="Add User" />
-      <div className='bg-light pb-36 rounded-xl pt-7 mx-2 sm:mx-7 flex flex-col items-center'>
+      <div className={`bg-light ${ !isExtraUser || !isInstallment ? 'h-[90%]' : '' } pb-36 rounded-xl pt-7 mx-2 sm:mx-7 flex flex-col items-center ${loading ? 'blur-sm' : ''} `}>
         <div className='text-3xl font-semibold text-secondary pb-3'>
           <h1 className='text-center'>Add User Details</h1>
         </div>
@@ -130,6 +148,7 @@ const AdduserForm = () => {
                 value={state.username}
                 onChange={handleFieldChange}
                 required
+                autoComplete="off"
               />
             </div>
             <div className='w-[75%] sm:w-full flex gap-3'>
@@ -143,6 +162,7 @@ const AdduserForm = () => {
                   value={state.houseNumber}
                   onChange={handleFieldChange}
                   required
+                  autoComplete="off"
                 />
               </div>
 
@@ -183,7 +203,7 @@ const AdduserForm = () => {
                     placeholder='Example: Al-Noor(H), Malappuram' 
                     value={state.address}
                     onChange={handleFieldChange}
-                    required
+                    autoComplete="off"
                     />
                 </div>
 
@@ -197,7 +217,7 @@ const AdduserForm = () => {
                         placeholder='Example: 7025302327'
                         value={state.mobile}
                         onChange={handleFieldChange}
-                        required
+                        autoComplete="off"
                         />
                     </div>
                     <div className='w-[50%] '>
@@ -211,6 +231,7 @@ const AdduserForm = () => {
                         value={state.totalAmount}
                         onChange={handleFieldChange}
                         required
+                        autoComplete="off"
                         />
                     </div>
                 </div>
@@ -319,6 +340,7 @@ const AdduserForm = () => {
                       name="date"
                       value={state.installment.date}
                       onChange={handleInstallmentChange}
+                      autoComplete="off"
                     />
                   </div>
                 </div>
@@ -326,13 +348,13 @@ const AdduserForm = () => {
                 <div className='w-full flex gap-3 '>
                   <div className='w-[50%]'>
                     <label className='text-[15px] md:text-[20px]'>Receipt no</label>
-                    <input
+                    <NumericFormat
                       className='w-full border border-secondary text-secondary rounded-md bg-light px-3 py-2 font-medium text-[15px] md:text-[20px] placeholder:text-primary placeholder:text-[13px] placeholder:sm:text-[16px]'
-                      type="text"
                       name="receiptNo"
                       placeholder='Example: 206'
                       value={state.installment.receiptNo}
                       onChange={handleInstallmentChange}
+                      autoComplete="off"
                     />
                   </div>
                   <div className='w-[50%]'>
@@ -344,6 +366,7 @@ const AdduserForm = () => {
                       placeholder='Example: 50,000'
                       value={state.installment.receivedAmount}
                       onChange={handleInstallmentChange}
+                      autoComplete="off"
                     />
                   </div>
                 </div>
@@ -379,6 +402,7 @@ const AdduserForm = () => {
                             name="name"
                             placeholder='Example: Ahamed'
                             value={state.extraUser.name}
+                            autoComplete="off"
                             onChange={(e) => {
                             dispatch({
                                 type: 'SET_EXTRAUSER',
@@ -397,6 +421,7 @@ const AdduserForm = () => {
                             name="date"
                             value={state.extraUser.date}
                             onChange={handleExtraUserChange}
+                            autoComplete="off"
                             />
                         </div>
                     </div>
@@ -411,6 +436,7 @@ const AdduserForm = () => {
                             placeholder='Example: Father'
                             value={state.extraUser.relation}
                             onChange={handleExtraUserChange}
+                            autoComplete="off"
                             />   
                         </div>
                         <div className='w-[50%]'>
@@ -422,6 +448,7 @@ const AdduserForm = () => {
                             placeholder='Example: 50,000'
                             value={state.extraUser.receivedAmount}
                             onChange={handleExtraUserChange}
+                            autoComplete="off"
                             />   
                         </div>
                     </div>
@@ -439,46 +466,36 @@ const AdduserForm = () => {
           </div>
             {/* Extra user Div Ends Here... */}
 
-            {/* installments display */}
-            <div className='w-full '>
-             { state.installments.length > 0 && <>           
-              <h3 className='ml-16 sm:ml-0'>Installments:</h3>
-              <ul>
-                <ExtraDataTable onEditInstallment={handleEditInstallment}  onEditExtraUser={handleEditExtraUser} />
-              </ul>
-             </> 
-             } 
-            </div>
+            <div className='w-full flex flex-col sm:flex-row gap-3 pt-7'>
+                {/* installments display */}
+                <div className='w-full sm:w-[50%] px-12 sm:px-0'>
+                    { state.installments.length > 0 && 
+                      <>
+                        <h1>Added installments</h1>
+                        <InstallmentTable onEditInstallment={handleEditInstallment} />
+                      </>
+                    }
+                </div>
 
-             {/* extra user data */}
-             <div>
-             { state.extraUsers.length > 0 && <>           
-                <h3 className='ml-16 sm:ml-0'>Extra users</h3>
-                <ul>
-                {state.extraUsers.map((extra, index) => (
-                  <>
-                    <li key={index}>{extra.name} - {extra.date} - {extra.relation} - {extra.receivedAmount}</li>
-                    <button
-                        type='button'
-                        className='bg-primary text-light px-3 py-2 rounded-md font-medium text-[15px] md:text-[18px]'
-                        onClick={() => handleEditInstallment(index)}
-                    >
-                        Edit
-                    </button>
-                  </>
-                ))}
-                </ul>
-             </> 
-             } 
+                {/* extra user data */}
+                <div className='w-full sm:w-[50%] px-12 sm:px-0'>
+                    { state.extraUsers.length > 0 && 
+                      <>
+                        <h1>Added users</h1>
+                        <ExtraDataTable onEditExtraUser={handleEditExtraUser} />
+                      </>
+                    }
+                </div>
             </div>
+            
 
           <div className='flex justify-center pt-4 gap-4' >
             <button
               type="submit"
               onClick={handleSubmit}
-              className='bg-secondary text-dark p-3 rounded-md text-center'
+              className='bg-secondary text-dark py-2 px-5 rounded-md text-center text-[20px] '
             >
-              Add user
+              Submit user data
             </button>
           </div>
 

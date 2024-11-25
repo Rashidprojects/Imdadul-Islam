@@ -41,6 +41,7 @@ export const submitFundData = async (data) => {
       await addDoc(fundCollection, { ...data, siNo: newSiNo });
   
       console.log(`Document added successfully with siNo: ${newSiNo}`);
+      
       return newSiNo;
     } catch (error) {
       throw new Error("Error adding document: " + error.message);
