@@ -31,12 +31,20 @@ const Login = () => {
                 ) : ''
             }
         </div>
-      <div className = {` bg-light w-[400px] md:w-[500px] h-[600px] rounded-xl p-5 flex flex-col justify-center items-center gap-3 ${loading ? 'blur-sm' : ''}  `}>
-        <div className='flex flex-col justify-center items-center'>
-            <span className='text-primary text-3xl'><i className="fa-solid fa-mosque "></i></span>
-            <h3 className='text-center text-[22px] sm:text-2xl font-semibold gap-1 pb-3 text-secondary'>ഇംദാദുൽ ഇസ്ലാം <br /> <span className='text-[18px] sm:text-[20px]'>പടിക്കൽ മഹല്ല് ജമാഅത് കമ്മിറ്റി</span></h3>
-            <h2 className='text-3xl sm:text-5xl font-bold text-primary'>Admin Login</h2>
-        </div>
+        <div className = {` bg-light w-[400px] md:w-[500px] h-[600px] rounded-xl p-5 flex flex-col justify-center items-center gap-3 ${loading ? 'blur-sm' : ''}  `}>
+            <div className="flex flex-col justify-center items-center">
+                <span className="text-primary text-3xl">
+                    <i className="fa-solid fa-mosque "></i>
+                </span>
+                <h3 className="text-center text-[22px] sm:text-2xl font-semibold gap-1 pb-3 text-secondary">
+                    ഇംദാദുൽ ഇസ്ലാം <br />
+                    <span className="text-[18px] sm:text-[20px] leading-8 block">
+                    പടിക്കൽ മഹല്ല് ജമാഅത് കമ്മിറ്റി
+                    </span>
+                </h3>
+                <h2 className="text-3xl sm:text-5xl font-bold text-primary">Admin Login</h2>
+            </div>
+
         <input
             type="text"
             value={username}
