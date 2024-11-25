@@ -62,7 +62,7 @@ export const useLogin = (username, password) => {
       }
 
       login();
-      navigate('/user-dashboard');
+      navigate('/add-user');
 
       dispatch({
         type: 'SHOW_TOAST',

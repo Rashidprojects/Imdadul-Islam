@@ -33,14 +33,14 @@ const Login = () => {
         </div>
       <div className = {` bg-light w-[400px] md:w-[500px] h-[600px] rounded-xl p-5 flex flex-col justify-center items-center gap-3 ${loading ? 'blur-sm' : ''}  `}>
         <span className='text-primary text-3xl'><i className="fa-solid fa-mosque "></i></span>
-        <h3 className='text-center text-2xl font-semibold gap-1 pb-4 text-secondary'>ഇമ്ദാദുൽ ഇസ്ലാം <br /> മഹല്ല് ജമാഅത് കമ്മിറ്റി</h3>
-        <h2 className='text-4xl sm:text-5xl font-bold text-primary pb-4'>Admin Login</h2>
+        <h3 className='text-center text-[22px] sm:text-2xl font-semibold gap-1 pb-4 text-secondary'>ഇംദാദുൽ ഇസ്ലാം <br /> <span className='text-[18px] sm:text-[20px]'>പടിക്കൽ മഹല്ല് ജമാഅത് കമ്മിറ്റി</span></h3>
+        <h2 className='text-3xl sm:text-5xl font-bold text-primary pb-4'>Admin Login</h2>
         <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Admin username"
-            className='w-[280px] border border-primary rounded-md text-[20px] p-2 bg-dark placeholder-primary font-semibold'
+            className='w-[280px] border border-primary rounded-md text-[17px] sm:text-[20px] p-2 bg-dark placeholder-primary font-semibold'
             required
         />
         <div className='relative'>
@@ -49,7 +49,7 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
-                className='w-[280px] border border-primary rounded-md text-[20px] p-2 bg-dark placeholder-primary font-semibold'
+                className='w-[280px] border border-primary rounded-md text-[17px] sm:text-[20px] p-2 bg-dark placeholder-primary font-semibold'
                 required
             />
             <button
@@ -62,7 +62,7 @@ const Login = () => {
         </div>
         
         <button onClick={handleSignIn} 
-            className='bg-primary px-3 py-2 w-[120px] text-2xl rounded-md text-center text-light font-semibold hover:scale-105 transition-transform duration-200 ease-in'>
+            className='bg-primary px-3 py-1 sm:py-2 w-[120px] text-[20px] sm:text-2xl rounded-md text-center text-light font-semibold hover:scale-105 transition-transform duration-200 ease-in'>
             Sign in</button>
         {error && <p style={{ color: 'red' }}>{error}</p>}
       </div>
