@@ -47,7 +47,7 @@ const CheckData = () => {
             </tr>
           </thead>
           <tbody>
-            {userState.users.map((user, index) => (
+            {userState.users.map((user) => (
               <tr key={user.id}>
                 <td>{user?.siNo}</td> {/* Display serial number */}
                 <td>{user?.username}</td>
