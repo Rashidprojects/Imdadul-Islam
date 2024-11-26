@@ -1,6 +1,9 @@
 import  { useState } from "react";
+import { IoIosArrowDropdownCircle,  IoIosArrowDropupCircle } from "react-icons/io";
 
 const CustomSelect = ({ onSelectionChange }) => {
+  const [showoptions, setShowOptions] = useState(false)
+
   // State for options
   const [options, setOptions] = useState([
     { id: 0, value: "", name: "Filter users by area", status: true },
@@ -28,22 +31,28 @@ const CustomSelect = ({ onSelectionChange }) => {
   };
 
   return (
-    <div className="pl-7 w-[240px]">
+    <div className=" w-[200px] sm:w-[240px] relative">
       {/* Display the selected option */}
-      <div className="border-2 border-primary hover:scale-105 cursor-pointer rounded-md p-1 sm:p-2">
+      <div className="border-2 flex items-center justify-between border-primary cursor-pointer rounded-md p-1 sm:p-2">
         {options.map(
           (item) =>
             item.status && <p key={item.id} className="font-medium sm:text-[18px]" >{item.name}</p> // Only show the active option
         )}
+        <div onClick={() => setShowOptions(!showoptions)}>
+        {
+            !showoptions ? (<IoIosArrowDropdownCircle className="text-[23px] text-primary"/>) : 
+            (<IoIosArrowDropupCircle className="text-[23px] text-primary"/>)
+        }
+        </div>
       </div>
 
       {/* Display all options */}
-      <div>
+      <div className={`flex flex-col ${!showoptions ? 'hidden' : ''}  absolute border border-secondary bg-light w-[200px] sm:w-[240px]`}>
         {options.map((item) => (
           <p
             key={item.id}
-            onClick={() => handleOptionClick(item.id)}
-            className="cursor-pointer hover:text-primary "
+            onClick={() => { handleOptionClick(item.id),  setShowOptions(!showoptions) }}
+            className={` cursor-pointer hover:text-primary sm:text-[20px] ${ item.status ? 'bg-secondary text-light' : '' } `} 
           >
             {item.name}
           </p>
