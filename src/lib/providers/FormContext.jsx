@@ -14,6 +14,8 @@ const initialState = {
   extraUsers: [],
   extraUser: { name: '', date: '', relation: '', receivedAmount: '' },
   amountPaid: '',
+  isInstallment: false,
+  isExtraUser: false,
   isLoading: false,
   error: null,
 };
@@ -26,6 +28,8 @@ const EDIT_INSTALLMENT = 'EDIT_INSTALLMENT';
 const SET_EXTRAUSER = 'SET_EXTRAUSER';
 const ADD_EXTRAUSER = 'ADD_EXTRAUSER';
 const EDIT_EXTRAUSER = 'EDIT_EXTRAUSER';
+const SET_IS_INSTALLMENT = 'SET_IS_INSTALLMENT';
+const SET_IS_EXTRAUSER = 'SET_IS_EXTRAUSER';
 const RESET_FORM = 'RESET_FORM';
 const SET_LOADING = 'SET_LOADING';
 const SET_ERROR = 'SET_ERROR';
@@ -55,6 +59,10 @@ const formContextReducer = (state, action) => {
         extraUser: state.extraUsers[action.index],
         extraUsers: state.extraUsers.filter((_, i) => i !== action.index), // Remove the edited installment temporarily
     };
+    case SET_IS_INSTALLMENT: 
+      return { ...state, isInstallment: action.value };
+    case SET_IS_EXTRAUSER:
+      return { ...state, isExtraUser: action.value };
     case RESET_FORM:
       return initialState;
     case SET_LOADING:

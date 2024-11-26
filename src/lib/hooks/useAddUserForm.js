@@ -4,11 +4,8 @@ import { submitFundData } from '../services/firestoreService';
 
 export const useAddUserForm = () => {
   const { state, dispatch } = useForm();
-  const [isInstallment, setIsInstallment] = useState(false);
-  const [isExtraUser, setIsExtraUser] = useState(false);
 
-  const toggleInstallmentForm = () => setIsInstallment((prev) => !prev);
-  const toggleExtraUserForm = () => setIsExtraUser((prev) => !prev);
+  const [editIndex, setEditIndex] = useState(false);
 
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
@@ -20,14 +17,34 @@ export const useAddUserForm = () => {
     dispatch({ type: 'SET_INSTALLMENT', name, value });
   };
 
+
   const handleAddInstallment = () => {
     if (!state.installment.name || !state.installment.date) {
       alert('Complete all installment fields.');
       return;
     }
     dispatch({ type: 'ADD_INSTALLMENT' });
-    setIsInstallment(false);
+    setEditIndex(false)
   };
+
+  const handleIsInstallment = () => {
+    const newValue = !state.isInstallment;
+    dispatch({ type: 'SET_IS_INSTALLMENT', value: newValue })
+    console.log('Add Installment button clicked, isInstallment:', newValue); // Debugging log
+  }
+
+  const handleIsExtraUser = () => {
+    const newValue = !state.isExtraUser;
+    dispatch({ type: 'SET_IS_EXTRAUSER', value: newValue })
+    console.log('Add Extra User button clicked, isExtraUser:', newValue); // Debugging log
+  }
+
+  const handleEditInstallment = (index) => {
+    console.log("Editing installment at index:", index);
+    setEditIndex(true)
+    dispatch({ type: 'EDIT_INSTALLMENT', index });
+  };
+
 
   const handleExtraUserChange = (e) => {
     const { name, value } = e.target;
@@ -59,17 +76,19 @@ export const useAddUserForm = () => {
 
   return {
     state,
+    dispatch,
     handlers: {
       handleFieldChange,
       handleInstallmentChange,
       handleAddInstallment,
+      handleIsInstallment,
+      handleEditInstallment,
       handleExtraUserChange,
       handleAddExtraUser,
+      handleIsExtraUser,
       handleSubmit,
-      toggleInstallmentForm,
-      toggleExtraUserForm,
     },
-    uiState: { isInstallment, isExtraUser },
+    uiState: { editIndex, },
   };
 };
 

@@ -4,11 +4,20 @@ import Table from "../../components/Table"
 import CheckData from "../../components/CheckData"
 import { useState } from "react"
 import MainTable from "../../components/MainTable"
+import CustomSelect from "../../components/Dashboard/CustomSelect"
 
 const Dashboard = () => {
     const navigate = useNavigate()
     const [isArea, setIsArea] = useState('')
+    const [selectedValue, setSelectedValue] = useState("");
+
     console.log('selected area is : ', isArea);
+    console.log('prop passed value : ', selectedValue);
+
+    // Callback function to update the selected value
+  const handleSelectionChange = (value) => {
+    setIsArea(value);
+  };
     
   return (
     <div className="bg-primary h-screen pt-7 px-2"> 
@@ -38,6 +47,8 @@ const Dashboard = () => {
                 <option value="A3">A3</option>
                 <option value="A4">A4</option>
             </select>
+
+            <CustomSelect onSelectionChange={handleSelectionChange} />
         </div>
         <div className="flex justify-end pr-5 pt-5 pb-5">
             <button onClick={() => navigate('/add-user')}
@@ -48,7 +59,7 @@ const Dashboard = () => {
             <MainTable isArea={isArea} />
 
             <Table isArea = {isArea} />
-            {/* <Pagination /> */}
+            <Pagination />
             <CheckData isArea = {isArea} />
         </div>
 
