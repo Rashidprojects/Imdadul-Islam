@@ -31,12 +31,12 @@ const CustomSelect = ({ onSelectionChange }) => {
   };
 
   return (
-    <div className=" w-[200px] sm:w-[240px] relative">
+    <div className=" w-[230px] sm:w-[240px] relative">
       {/* Display the selected option */}
       <div className="border-2 flex items-center justify-between border-primary cursor-pointer rounded-md p-1 sm:p-2">
         {options.map(
           (item) =>
-            item.status && <p key={item.id} className="font-medium sm:text-[18px]" >{item.name}</p> // Only show the active option
+            item.status && <p key={item.id} className="font-medium sm:text-[18px] px-3" >{item.name}</p> // Only show the active option
         )}
         <div onClick={() => setShowOptions(!showoptions)}>
         {
@@ -47,12 +47,12 @@ const CustomSelect = ({ onSelectionChange }) => {
       </div>
 
       {/* Display all options */}
-      <div className={`flex flex-col ${!showoptions ? 'hidden' : ''}  absolute border border-secondary bg-light w-[200px] sm:w-[240px]`}>
+      <div className={`flex flex-col ${!showoptions ? 'hidden' : ''}  absolute border border-secondary bg-light w-[230px] sm:w-[240px] rounded-md mt-1`}>
         {options.map((item) => (
           <p
             key={item.id}
             onClick={() => { handleOptionClick(item.id),  setShowOptions(!showoptions) }}
-            className={` cursor-pointer hover:text-primary sm:text-[20px] ${ item.status ? 'bg-secondary text-light' : '' } `} 
+            className={` cursor-pointer hover:text-primary sm:text-[20px] py-2 px-4 ${ item.status ? 'bg-secondary text-light' : '' } `} 
           >
             {item.name}
           </p>

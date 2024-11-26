@@ -35,7 +35,7 @@ const Dashboard = () => {
         <div>
             <MainTable isArea={isArea} />
 
-            <Table isArea = {isArea} />
+            {/* <Table isArea = {isArea} /> */}
             <Pagination />
             <CheckData isArea = {isArea} />
         </div>
