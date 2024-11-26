@@ -12,7 +12,7 @@ const ExtraDataTable = ({ onEditExtraUser }) => {
         {/* Extra user table starts here */}
         {  <>
           <div className=" w-full ">
-            <div className="overflow-auto rounded-lg shadow ">
+            <div className="rounded-lg shadow ">
                 <table className="w-full">
                     <thead className="bg-primary text-light border-2 border-primary ">
                     <tr>

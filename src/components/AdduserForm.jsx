@@ -20,6 +20,7 @@ const AdduserForm = () => {
 
   const [isInstallment, setIsInstallment] = useState(false)
   const [isExtraUser, setIsExtraUser] = useState(false)
+  const [isData, setIsData] = useState(false)
   const [editIndex, setEditIndex] = useState(false);
   const [loading, setLoading] = useState(false)
 
@@ -45,6 +46,7 @@ const AdduserForm = () => {
 
     dispatch({ type: 'ADD_INSTALLMENT' });
     setIsInstallment(false)
+    setIsData(true)
     setEditIndex(false)
   };
 
@@ -70,6 +72,7 @@ const AdduserForm = () => {
       return;
     }
     setIsExtraUser(false)
+    setIsData(true)
     dispatch({ type: 'ADD_EXTRAUSER' })
   }
 
@@ -82,7 +85,7 @@ const AdduserForm = () => {
 
   const handleSubmit = async (e) => {
     if (!state.username || !state.houseNumber || !state.areaCode) {
-        alert('Please fill out all the extra user fields.');
+        alert('Please fill out all the user fields.');
       return;
     }
     e.preventDefault();
@@ -121,7 +124,7 @@ const AdduserForm = () => {
   console.log('current load status : ', loading);
   
   return (
-    <div className={` bg-primary ${ isExtraUser || isInstallment ? 'h-auto' : 'h-screen' } pb-3`}>
+    <div className={` bg-primary ${ isExtraUser || isInstallment || isData ? 'h-auto' : 'h-screen' } pb-3`}>
       {/* loading animation  */}
       <div className='text-2xl absolute z-20 left-[48%]'>
             {
@@ -132,7 +135,7 @@ const AdduserForm = () => {
         </div>
 
       <AdminNav currentSection="Add User" />
-      <div className={`bg-light ${ isExtraUser || isInstallment ? 'h-auto' : 'h-[90%]' } pb-36 rounded-xl pt-7 mx-2 sm:mx-7 flex flex-col items-center ${loading ? 'blur-sm' : ''} `}>
+      <div className={`bg-light ${ isExtraUser || isInstallment || isData ? 'h-auto' : 'h-[90%]' } pb-36 rounded-xl pt-7 px-2 flex flex-col items-center ${loading ? 'blur-sm' : ''} `}>
         <div className='text-3xl font-semibold text-secondary pb-3'>
           <h1 className='text-center'>Add User Details</h1>
         </div>
@@ -144,7 +147,6 @@ const AdduserForm = () => {
                 className='w-full border border-secondary text-secondary rounded-md bg-dark px-3 py-2 font-medium text-[15px] md:text-[20px] placeholder:text-primary placeholder:text-[13px] placeholder:sm:text-[16px] focus:border-2 focus:border-primary'
                 type="text"
                 name="username"
-                placeholder='Example: Muhammed Musthafa M'
                 value={state.username}
                 onChange={handleFieldChange}
                 required
@@ -158,7 +160,6 @@ const AdduserForm = () => {
                 <NumericFormat
                   className='w-full border border-secondary text-secondary rounded-md bg-dark px-3 py-2 font-medium text-[15px] md:text-[20px] placeholder:text-primary placeholder:text-[13px] placeholder:sm:text-[16px]'
                   name="houseNumber"
-                  placeholder='Example: 114'
                   value={state.houseNumber}
                   onChange={handleFieldChange}
                   required
@@ -200,7 +201,6 @@ const AdduserForm = () => {
                     className='w-full border border-secondary text-secondary rounded-md bg-dark px-3 py-2 font-medium text-[15px] md:text-[20px] placeholder:text-primary placeholder:text-[13px] placeholder:sm:text-[16px]'
                     type="text"
                     name="address"
-                    placeholder='Example: Al-Noor(H), Malappuram' 
                     value={state.address}
                     onChange={handleFieldChange}
                     autoComplete="off"
@@ -214,7 +214,6 @@ const AdduserForm = () => {
                         <NumericFormat
                         className='w-full border border-secondary text-secondary rounded-md bg-dark px-3 py-2 font-medium text-[15px] md:text-[20px] placeholder:text-primary placeholder:text-[13px] placeholder:sm:text-[16px]'
                         name="mobile"
-                        placeholder='Example: 7025302327'
                         value={state.mobile}
                         onChange={handleFieldChange}
                         autoComplete="off"
@@ -227,7 +226,6 @@ const AdduserForm = () => {
                         className='w-full border border-secondary text-secondary rounded-md bg-dark px-3 py-2 font-medium text-[15px] md:text-[20px] placeholder:text-primary placeholder:text-[13px] placeholder:sm:text-[16px]'
                         thousandSeparator={true}
                         name="totalAmount"
-                        placeholder='Example: 100,000'
                         value={state.totalAmount}
                         onChange={handleFieldChange}
                         required
@@ -322,7 +320,7 @@ const AdduserForm = () => {
 
                             )}
 
-                            { state.installments.length > 0 && state.installments.length < 5 && (
+                            { state.installments.length > 0 && state.installments.length < 15 && (
                             <MenuItem value={`Installment ${state.installments.length + 1}`}>
                                 Installment {state.installments.length + 1}
                             </MenuItem>
@@ -351,7 +349,6 @@ const AdduserForm = () => {
                     <NumericFormat
                       className='w-full border border-secondary text-secondary rounded-md bg-light px-3 py-2 font-medium text-[15px] md:text-[20px] placeholder:text-primary placeholder:text-[13px] placeholder:sm:text-[16px]'
                       name="receiptNo"
-                      placeholder='Example: 206'
                       value={state.installment.receiptNo}
                       onChange={handleInstallmentChange}
                       autoComplete="off"
@@ -363,7 +360,6 @@ const AdduserForm = () => {
                       className='w-full border border-secondary text-secondary rounded-md bg-light px-3 py-2 font-medium text-[15px] md:text-[20px] placeholder:text-primary placeholder:text-[13px] placeholder:sm:text-[16px]'
                       thousandSeparator={true}
                       name="receivedAmount"
-                      placeholder='Example: 50,000'
                       value={state.installment.receivedAmount}
                       onChange={handleInstallmentChange}
                       autoComplete="off"
@@ -400,7 +396,6 @@ const AdduserForm = () => {
                             className='w-full border border-secondary text-secondary rounded-md bg-light px-3 py-2 font-medium text-[15px] md:text-[20px] placeholder:text-primary placeholder:text-[13px] placeholder:sm:text-[16px]'
                             type="text"
                             name="name"
-                            placeholder='Example: Ahamed'
                             value={state.extraUser.name}
                             autoComplete="off"
                             onChange={(e) => {
@@ -433,7 +428,6 @@ const AdduserForm = () => {
                             className='w-full border border-secondary text-secondary rounded-md bg-light px-3 py-2 font-medium text-[15px] md:text-[20px] placeholder:text-primary placeholder:text-[13px] placeholder:sm:text-[16px]'
                             type='text'
                             name="relation"
-                            placeholder='Example: Father'
                             value={state.extraUser.relation}
                             onChange={handleExtraUserChange}
                             autoComplete="off"
@@ -445,7 +439,6 @@ const AdduserForm = () => {
                             className='w-full border border-secondary text-secondary rounded-md bg-light px-3 py-2 font-medium text-[15px] md:text-[20px] placeholder:text-primary placeholder:text-[13px] placeholder:sm:text-[16px]'
                             thousandSeparator={true}
                             name="receivedAmount"
-                            placeholder='Example: 50,000'
                             value={state.extraUser.receivedAmount}
                             onChange={handleExtraUserChange}
                             autoComplete="off"
@@ -466,26 +459,28 @@ const AdduserForm = () => {
           </div>
             {/* Extra user Div Ends Here... */}
 
-            <div className='w-full flex flex-col sm:flex-row gap-3 pt-7'>
+
+            <div className='w-full flex flex-col sm:flex-row gap-3  pt-7'>
                 {/* installments display */}
-                <div className='w-full sm:w-[50%] px-12 sm:px-0'>
-                    { state.installments.length > 0 && 
-                      <>
-                        <h1>Added installments</h1>
+                <div className="w-full sm:w-[50%] sm:px-0 px-10">
+                    {state.installments.length > 0 && (
+                        <div className="overflow-auto rounded-sm max-h-[400px] p-3">
                         <InstallmentTable onEditInstallment={handleEditInstallment} />
-                      </>
+                        </div>
+                    )}
+                </div>
+
+
+                {/* extra user data */}
+                <div className='w-full sm:w-[50%] sm:px-0 px-10  '>
+                    { state.extraUsers.length > 0 && 
+                      <div className='overflow-auto max-h-[400px] rounded-sm'>
+                        {/* <h1>Added users</h1> */}
+                        <ExtraDataTable onEditExtraUser={handleEditExtraUser} />
+                      </div>
                     }
                 </div>
 
-                {/* extra user data */}
-                <div className='w-full sm:w-[50%] px-12 sm:px-0'>
-                    { state.extraUsers.length > 0 && 
-                      <>
-                        <h1>Added users</h1>
-                        <ExtraDataTable onEditExtraUser={handleEditExtraUser} />
-                      </>
-                    }
-                </div>
             </div>
             
 

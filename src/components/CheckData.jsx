@@ -3,28 +3,32 @@ import { useForm } from '../lib/providers/FormContext';
 import { useUserData } from '../lib/providers/UserDataContext';
 import { useNavigate } from 'react-router-dom';
 
-const CheckData = () => {
+const CheckData = ({ isArea }) => {
+ 
   const { state: formState } = useForm(); // Form state
   const { state: userState, fetchUsers, setEditingUser, deleteUser } = useUserData(); // User data context
   const navigate = useNavigate();
 
   const [filteredUsers, setFilteredUsers] = useState([]);
 
+  const filterByArea = (areaCode) => {
+    const filtered = userState.users             
+            .filter((user) => user.areaCode == areaCode)            
+            .sort((a,b) => a.houseNumber - b.houseNumber)
+        setFilteredUsers(filtered)
+  }
 
   useEffect(() => {
     // Trigger fetchUsers when `formState` changes
     fetchUsers();
-  }, [formState]); // Dependencies to monitor (adjust based on your requirement)
+    filterByArea(isArea)
+
+  }, [formState, isArea]); // Dependencies to monitor (adjust based on your requirement)
 
   if (userState.loading) return <p>Loading...</p>;
   if (userState.error) return <p style={{ color: 'red' }}>{userState.error}</p>;
 
-  const filterByArea = (areaCode) => {
-    const filtered = userState.users 
-            .filter((user) => user.areaCode === areaCode)
-            .sort((a,b) => a.houseNumber - b.houseNumber)
-        setFilteredUsers(filtered)
-  }
+
 
   return (
     <div>
@@ -52,7 +56,7 @@ const CheckData = () => {
                 <td>{user?.siNo}</td> {/* Display serial number */}
                 <td>{user?.username}</td>
                 <td>{user?.houseNumber}</td>
-                <td>{user?.areaCode}</td>
+                <td>{user?.areaCode }</td>
                 <td>{user?.address? user.address : '-'}</td>
                 <td>{user.mobile ? user.mobile : '-'}</td>
                 <td>{user.totalAmount}</td>
@@ -78,8 +82,8 @@ const CheckData = () => {
 
         <div>
             <button onClick={() => setFilteredUsers(userState.users)}>All Users</button>
-            <button onClick={() => filterByArea("A1")}>Area A1</button>
-            <button onClick={() => filterByArea("A2")}>Area A2</button>
+            {/* <button onClick={() => filterByArea("A1")}>Area A1</button>
+            <button onClick={() => filterByArea("A2")}>Area A2</button> */}
             {/* Add more buttons for other areas */}
         </div>
 
