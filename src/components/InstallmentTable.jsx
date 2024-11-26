@@ -3,7 +3,8 @@ import { FaEdit } from "react-icons/fa";
 
 const InstallmentTable = ({ onEditInstallment }) => {
     const { state } = useForm();
-
+    console.log('state of installments : ', state.installments);
+    
 
   return (
     <div className="overflow-auto">

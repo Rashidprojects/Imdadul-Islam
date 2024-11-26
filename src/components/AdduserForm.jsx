@@ -24,6 +24,7 @@ const AdduserForm = () => {
   const [editIndex, setEditIndex] = useState(false);
   const [loading, setLoading] = useState(false)
 
+  
   // Handlers for form fields
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
@@ -124,7 +125,8 @@ const AdduserForm = () => {
   console.log('current load status : ', loading);
   
   return (
-    <div className={` bg-primary ${ isExtraUser || isInstallment || isData ? 'h-auto' : 'h-screen' } pb-3`}>
+    <div className={` bg-primary ${ isExtraUser || isInstallment || isData ? 'h-auto' : 'h-screen' } px-3
+     pb-3`}>
       {/* loading animation  */}
       <div className='text-2xl absolute z-20 left-[48%]'>
             {
@@ -272,7 +274,7 @@ const AdduserForm = () => {
                             labelId="installment-select-label"
                             id="installment-select"
                             name="name"
-                            value={state.installment.name || "default"}
+                            value={ editIndex ? state.installment.name : state.installment.name || 'default' }
                             onChange={(e) => {
                             dispatch({
                                 type: 'SET_INSTALLMENT',
@@ -313,12 +315,9 @@ const AdduserForm = () => {
                         >
                             <MenuItem value="default">--Select an option--</MenuItem>
 
-                            {!editIndex && state.installments.length === 0 ? ( 
+                            { state.installments.length === 0 ? ( 
                                 <MenuItem value="Installment 1">Installment 1</MenuItem>
-                                )  :  (
-                                <MenuItem value="Installment 1">Installment 1</MenuItem>
-
-                            )}
+                                )  :  ( '' )}
 
                             { state.installments.length > 0 && state.installments.length < 15 && (
                             <MenuItem value={`Installment ${state.installments.length + 1}`}>
