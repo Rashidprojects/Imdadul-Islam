@@ -6,13 +6,13 @@ const InstallmentTable = ({ onEditInstallment }) => {
 
 
   return (
-    <div className="w-full">
+    <div className="overflow-auto">
         
         {/* Installment table starts here */}
         {  <>
-          <div className="  ">
-            <div className="overflow-auto rounded-lg shadow ">
-                <table className="w-full">
+          <div className=" ">
+            <div className=" rounded-lg shadow ">
+                <table className="w-full ">
                     <thead className="bg-primary text-light border-2 border-primary ">
                     <tr>
                         <th className="w-20 p-2 text-[14px] sm:text-[18px] font-semibold tracking-wide text-left">Installment</th>
