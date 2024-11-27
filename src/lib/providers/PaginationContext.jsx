@@ -1,4 +1,4 @@
-import { createContext, useReducer, useContext } from 'react';
+import { createContext, useReducer, useContext, useEffect } from 'react';
 
 // Initial state for pagination
 const initialState = {
@@ -34,9 +34,20 @@ export const usePagination = () => {
   return useContext(PaginationContext);
 };
 
+// Helper to load state from localStorage
+const loadState = () => {
+  const storedState = localStorage.getItem('paginationState');
+  return storedState ? JSON.parse(storedState) : initialState;
+};
+
 // Provider component
 export const PaginationProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(paginationReducer, initialState);
+  const [state, dispatch] = useReducer(paginationReducer, loadState());
+
+  // Save state to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('paginationState', JSON.stringify(state));
+  }, [state]);
 
   const setPage = (page) => {
     dispatch({ type: SET_PAGE, payload: page });
