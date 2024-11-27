@@ -1,69 +1,83 @@
 import { useEffect, useState } from 'react';
-import { useForm } from '../lib/providers/FormContext';
 import { useUserData } from '../lib/providers/UserDataContext';
 import { usePagination } from '../lib/providers/PaginationContext';
+import { useFilteredUsers } from '../lib/hooks/useFilteredUsers';
+import { NumericFormat } from 'react-number-format';
+import { ImSearch } from "react-icons/im";
 
 const MainTable = ({ isArea }) => {
-  const { state: formState } = useForm();
   const { state: userState, fetchUsers } = useUserData();
   const { state, setTotalItems } = usePagination();
   const { currentPage, itemsPerPage } = state;
 
-  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [isFind, setIsFind] = useState('')
+
   
-  // Effect to set the total number of items when filteredUsers changes
+
+  // Custom hook to manage filtered users and pagination
+  const { filteredUsers, currentData, setFilteredUsers } = useFilteredUsers(
+    userState.users,
+    isArea,
+    currentPage,
+    itemsPerPage,
+  )
+  
+  // Update total items whenever filteredUsers changes
   useEffect(() => {
-    const totalItems = filteredUsers.length;
-
-    // Update context
-    setTotalItems(totalItems);
-
-    // Update local storage
-    localStorage.setItem('filteredUsersCount', totalItems.toString());
+    setTotalItems(filteredUsers.length);
   }, [filteredUsers.length]);
 
-  // Get the data for the current page
-  const indexOfLastItem = currentPage * itemsPerPage;
-  //   lastItem = 2 * 5 = 10
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  // firstItem = 10 - 5 = 5
-  const currentData = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
-  // slice data => slice(5, 10) o/p => [6,7,8,9,10]
 
-  // Function to filter users by area
-  const filterByArea = (areaCode) => {
-    const filtered = userState.users
-      .filter((user) => user.areaCode == areaCode)
-      .sort((a, b) => a.houseNumber - b.houseNumber);
-    setFilteredUsers(filtered);
-  };
-
-  // Initialize filteredUsers with all users on initial load
+  // Fetch users on component mount
   useEffect(() => {
     fetchUsers(); // Fetch user data
-    setFilteredUsers(userState.users); // Set initial state
   }, []);
 
-  // Trigger filter when `isArea` or `formState` changes
-  useEffect(() => {
-    fetchUsers(); // Fetch user data when formState changes
-    if (isArea) {
-      filterByArea(isArea); // Apply area filter
+
+  const handleFindUser = () => {
+    if (isFind.trim() === '') {
+      // Reset to show all filtered users if no input
+      fetchUsers();
+      return;
+    }    
+
+    const foundUser = filteredUsers.find(      
+      (user) => user.houseNumber ===  isFind
+    );
+ 
+    if (foundUser) {
+      setFilteredUsers([foundUser]); // Display only the found user
     } else {
-      setFilteredUsers(userState.users); // Reset to all users if no filter
+      setFilteredUsers([]); // Clear the list if no match is found
     }
-  }, [formState, isArea]);
+  }
 
-  // Ensure filteredUsers updates if userState.users changes
-  useEffect(() => {
-    if (!isArea) {
-      setFilteredUsers(userState.users);
-    }
-  }, [userState.users]);
 
+  const handleKeyPress = (event) => {
+  if (event.key === 'Enter' && isFind.trim() === '') {
+    fetchUsers();  // Trigger fetchUsers() when Enter is pressed and input is empty
+  }
+};
 
   return (
     <div className="overflow-auto rounded-lg shadow mx-5">
+      <div className='flex justify-center sm:justify-end items-center bg-primary'>
+
+        {/* Find signgle user input field */}
+        <div className= {` py-2 sm:pr-4 relative ${isArea !== '' ? 'flex' : 'hidden' } `} >
+          <NumericFormat  
+            placeholder='Enter House Number to Search'
+            onKeyDown={handleKeyPress}
+            onChange={(e) => setIsFind(e.target.value)}
+            className='border border-light bg-dark rounded-md w-[280px] sm:w-[320px] pl-2 pr-4 py-1 sm:py-2 sm:text-[18px] placeholder:text-primary ' />
+            <div 
+              onClick={handleFindUser}
+              className='absolute right-[10px] sm:right-[24px] bottom-[14px] px-1 sm:px-3 py-1  sm:py-2 rounded-md bg-secondary cursor-pointer z-10'>
+              <ImSearch className=' text-light sm:text-[18px]  ' />
+            </div>
+        </div>
+
+      </div>
       {filteredUsers.length === 0 ? (
         <p>No data found.</p>
       ) : (
