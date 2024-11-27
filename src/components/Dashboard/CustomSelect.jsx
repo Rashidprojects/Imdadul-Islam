@@ -57,7 +57,7 @@ const CustomSelect = ({ onSelectionChange, reset }) => {
       </div>
 
       {/* Display all options */}
-      <div className={`flex flex-col ${!showOptions ? 'hidden' : ''}  absolute border border-secondary bg-light w-[230px] sm:w-[240px] rounded-md mt-1`}>
+      <div className={`flex flex-col ${!showOptions ? 'hidden' : ''}  absolute border border-secondary bg-light w-[230px] sm:w-[240px] rounded-md mt-1 z-30`}>
         {options.map((item) => (
           <p
             key={item.id}
