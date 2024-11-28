@@ -15,6 +15,9 @@ const Installment = () => {
             editIndex
         }
     } = useAddUserForm();
+
+    console.log('in installment :', state.installments.length);
+    
     
 
   return (
@@ -73,10 +76,9 @@ const Installment = () => {
                                 }}
                             >
                                 <MenuItem value="default">--Select an option--</MenuItem>
-
-                                { state.installments.length === 0 ? ( 
+                                { state.installments.length === 0 && ( 
                                     <MenuItem value="Installment 1">Installment 1</MenuItem>
-                                    )  :  ('')}
+                                    ) }
 
                                 { state.installments.length > 0 && state.installments.length < 15 && (
                                 <MenuItem value={`Installment ${state.installments.length + 1}`}>

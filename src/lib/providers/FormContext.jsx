@@ -1,7 +1,5 @@
-// FormContext.jsx
 import { createContext, useReducer, useContext } from 'react';
 
-// Initial state for the form
 const initialState = {
   username: '',
   houseNumber: '',
@@ -9,8 +7,10 @@ const initialState = {
   address: '',
   mobile: '',
   totalAmount: '',
+  totalReceived: '',
+  pending: '',
   installments: [],
-  installment: { name: '', date: '', receiptNo: '', receivedAmount: '' }, // Added receivedAmount
+  installment: { name: '', date: '', receiptNo: '', receivedAmount: '' },
   extraUsers: [],
   extraUser: { name: '', date: '', relation: '', receivedAmount: '' },
   amountPaid: '',
@@ -20,7 +20,6 @@ const initialState = {
   error: null,
 };
 
-// Action types
 const SET_FIELD = 'SET_FIELD';
 const SET_INSTALLMENT = 'SET_INSTALLMENT';
 const ADD_INSTALLMENT = 'ADD_INSTALLMENT';
@@ -34,32 +33,40 @@ const RESET_FORM = 'RESET_FORM';
 const SET_LOADING = 'SET_LOADING';
 const SET_ERROR = 'SET_ERROR';
 
-// Reducer function to manage state
 const formContextReducer = (state, action) => {
   switch (action.type) {
     case SET_FIELD:
+      console.log(`SET_FIELD called with field: ${action.field}, value: ${action.value}`);
       return { ...state, [action.field]: action.value };
     case SET_INSTALLMENT:
-        return { ...state, installment: { ...state.installment, [action.name]: action.value } };
+      return { ...state, installment: { ...state.installment, [action.name]: action.value } };
     case ADD_INSTALLMENT:
-        return { ...state, installments: [...state.installments, state.installment], installment: { name: '', date: '', receiptNo: '', receivedAmount: '' } }; 
+      return {
+        ...state,
+        installments: [...state.installments, state.installment],
+        installment: { name: '', date: '', receiptNo: '', receivedAmount: '' },
+      };
     case EDIT_INSTALLMENT:
-    return {
+      return {
         ...state,
         installment: state.installments[action.index],
-        installments: state.installments.filter((_, i) => i !== action.index), // Remove the edited installment temporarily
-    }; 
+        installments: state.installments.filter((_, i) => i !== action.index),
+      };
     case SET_EXTRAUSER:
       return { ...state, extraUser: { ...state.extraUser, [action.name]: action.value } };
     case ADD_EXTRAUSER:
-        return { ...state, extraUsers: [...state.extraUsers, state.extraUser], extraUser: { name: '', date: '', relation: '', receivedAmount: '' } }; 
+      return {
+        ...state,
+        extraUsers: [...state.extraUsers, state.extraUser],
+        extraUser: { name: '', date: '', relation: '', receivedAmount: '' },
+      };
     case EDIT_EXTRAUSER:
-    return {
+      return {
         ...state,
         extraUser: state.extraUsers[action.index],
-        extraUsers: state.extraUsers.filter((_, i) => i !== action.index), // Remove the edited installment temporarily
-    };
-    case SET_IS_INSTALLMENT: 
+        extraUsers: state.extraUsers.filter((_, i) => i !== action.index),
+      };
+    case SET_IS_INSTALLMENT:
       return { ...state, isInstallment: action.value };
     case SET_IS_EXTRAUSER:
       return { ...state, isExtraUser: action.value };
@@ -74,13 +81,10 @@ const formContextReducer = (state, action) => {
   }
 };
 
-// Create context
 const FormContext = createContext();
 
-// Context provider component
 export const FormProvider = ({ children }) => {
   const [state, dispatch] = useReducer(formContextReducer, initialState);
-
 
   return (
     <FormContext.Provider value={{ state, dispatch }}>
@@ -89,5 +93,4 @@ export const FormProvider = ({ children }) => {
   );
 };
 
-// Custom hook to access the context
 export const useForm = () => useContext(FormContext);

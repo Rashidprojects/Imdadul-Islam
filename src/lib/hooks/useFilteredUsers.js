@@ -14,7 +14,12 @@ export const useFilteredUsers = (users, areaCode, currentPage, itemsPerPage) => 
         }
 
         setFilteredUsers(filtered)
+
+        console.log('all users : ', users);
+        
     }, [users, areaCode])
+
+    
 
     // Pagination logic
     const indexOfLastItem = currentPage * itemsPerPage;

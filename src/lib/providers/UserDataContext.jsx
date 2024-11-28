@@ -91,7 +91,7 @@ export const UserDataProvider = ({ children }) => {
 
   return (
     <UserDataContext.Provider
-      value={{ state, updateUser,  fetchUsers, deleteUser, setEditingUser }} // Add setEditingUser to the context
+      value={{ state, updateUser, fetchUsers, deleteUser, setEditingUser }} // Add setEditingUser to the context
     >
       {children}
     </UserDataContext.Provider>

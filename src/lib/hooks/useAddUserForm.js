@@ -1,11 +1,36 @@
-import { useState } from 'react';
-import { useForm } from '../providers/FormContext';
-import { submitFundData } from '../services/firestoreService';
+import { useEffect, useState } from "react";
+import { useForm } from "../providers/FormContext";
+import { submitFundData } from "../services/firestoreService";
 
 export const useAddUserForm = () => {
   const { state, dispatch } = useForm();
+  const [editIndex, setEditIndex] = useState(false);  
 
-  const [editIndex, setEditIndex] = useState(false);
+  console.log('hello from kdy : ', state.installments);
+
+  const installmentSum = state.installments.reduce((sum, installment) => {
+    const receivedAmount = installment.receivedAmount.replace(/,/g, '');
+    return sum + (Number(receivedAmount) || 0);
+  }, 0);
+
+  const extraUsersSum = state.extraUsers.reduce((sum, extraUser) => {
+    const receivedAmount = extraUser.receivedAmount.replace(/,/g, '');
+    return sum + (Number(receivedAmount) || 0);
+  }, 0);
+
+  const totalRecieved = installmentSum + extraUsersSum
+  const pending = state.totalAmount.replace(/,/g, '') - totalRecieved
+
+  console.log('installment sum = ', pending);
+
+  
+  useEffect(() => {
+    
+    dispatch({ type: 'SET_FIELD', field: 'totalReceived', value: totalRecieved });
+    dispatch({ type: 'SET_FIELD', field: 'pending', value: pending });
+
+
+  },[totalRecieved])
 
   const handleFieldChange = (e) => {
     const { name, value } = e.target;
@@ -17,14 +42,14 @@ export const useAddUserForm = () => {
     dispatch({ type: 'SET_INSTALLMENT', name, value });
   };
 
-
   const handleAddInstallment = () => {
     if (!state.installment.name || !state.installment.date) {
       alert('Complete all installment fields.');
       return;
     }
     dispatch({ type: 'ADD_INSTALLMENT' });
-    setEditIndex(false)
+    updateTotalReceived(); // Recalculate total after adding an installment
+    setEditIndex(false);
   };
 
   const handleIsInstallment = () => {
@@ -32,19 +57,6 @@ export const useAddUserForm = () => {
     dispatch({ type: 'SET_IS_INSTALLMENT', value: newValue })
     console.log('Add Installment button clicked, isInstallment:', newValue); // Debugging log
   }
-
-  const handleIsExtraUser = () => {
-    const newValue = !state.isExtraUser;
-    dispatch({ type: 'SET_IS_EXTRAUSER', value: newValue })
-    console.log('Add Extra User button clicked, isExtraUser:', newValue); // Debugging log
-  }
-
-  const handleEditInstallment = (index) => {
-    console.log("Editing installment at index:", index);
-    setEditIndex(true)
-    dispatch({ type: 'EDIT_INSTALLMENT', index });
-  };
-
 
   const handleExtraUserChange = (e) => {
     const { name, value } = e.target;
@@ -57,7 +69,39 @@ export const useAddUserForm = () => {
       return;
     }
     dispatch({ type: 'ADD_EXTRAUSER' });
+    updateTotalReceived(); // Recalculate total after adding an extra user
   };
+
+  const handleIsExtraUser = () => {
+    const newValue = !state.isExtraUser;
+    dispatch({ type: 'SET_IS_EXTRAUSER', value: newValue })
+    console.log('Add Extra User button clicked, isExtraUser:', newValue); // Debugging log
+  }
+
+  const calculateTotalReceived = (installments, extraUsers) => {
+    console.log('Installments:', installments);
+    console.log('Extra Users:', extraUsers);
+    const installmentSum = installments.reduce(
+      (sum, installment) => sum + (Number(installment.receivedAmount) || 0),
+      0
+    );
+    console.log('Installment Sum:', installmentSum);
+    const extraUserSum = extraUsers.reduce(
+      (sum, extraUser) => sum + (Number(extraUser.receivedAmount) || 0),
+      0
+    );
+    console.log('Extra User Sum:', extraUserSum);
+
+    return installmentSum + extraUserSum;
+  };
+
+  const updateTotalReceived = () => {
+    console.log('Calling calculateTotalReceived...');
+    const total = calculateTotalReceived(state.installments, state.extraUsers);
+    console.log('Total Received:', total);
+    dispatch({ type: 'SET_FIELD', field: 'totalReceived', value: total });
+  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -75,39 +119,17 @@ export const useAddUserForm = () => {
   };
 
   return {
-    state,
-    dispatch,
+    state, dispatch,
     handlers: {
       handleFieldChange,
+      handleIsInstallment,
       handleInstallmentChange,
       handleAddInstallment,
-      handleIsInstallment,
-      handleEditInstallment,
+      handleIsExtraUser,
       handleExtraUserChange,
       handleAddExtraUser,
-      handleIsExtraUser,
       handleSubmit,
     },
-    uiState: { editIndex, },
+    uiState: { editIndex },
   };
 };
-
-/*  This states usage :-
-
-    const AddUserForm = () => {
-    const {
-        state,
-        handlers: {
-        handleFieldChange,
-        handleInstallmentChange,
-        handleAddInstallment,
-        handleExtraUserChange,
-        handleAddExtraUser,
-        handleSubmit,
-        toggleInstallmentForm,
-        toggleExtraUserForm,
-        },
-        uiState: { isInstallment, isExtraUser },
-    } = useAddUserForm();
-
-*/

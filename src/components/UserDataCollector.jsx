@@ -4,6 +4,7 @@ const UserDataCollector = () => {
   return (
     <div>
         <Form />
+        
     </div>
   )
 }

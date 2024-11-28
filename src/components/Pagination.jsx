@@ -5,9 +5,7 @@ const Pagination = () => {
   const { state, setPage, setItemsPerPage } = usePagination();
   const { totalItems, itemsPerPage, currentPage } = state;
 
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-  console.log('total items : ', totalItems);
-  
+  const totalPages = Math.ceil(totalItems / itemsPerPage);  
 
   // Handle previous and next page buttons
   const handlePrev = () => {
@@ -27,7 +25,7 @@ const Pagination = () => {
   };
 
   return (
-    <div className="flex items-center justify-between p-4">
+    <div className="flex items-center flex-col sm:flex-row justify-between p-4 gap-3">
 
       <div className="flex items-center gap-3">
         <button onClick={handlePrev} className="sm:py-1 px-2 sm:px-3 bg-dark text-primary border sm:border-2 border-secondary cursor-pointer sm:text-[18px] rounded-md sm:rounded-lg" disabled={currentPage === 1}>
@@ -75,7 +73,7 @@ const Pagination = () => {
         </button>
       </div>
 
-      <div className="gap-2 flex justify-center">
+      <div className="gap-2 flex sm:justify-center">
         <p className="text-secondary text-[16px] sm:text-[20px] ">Per Page</p>
         <select onChange={handleItemsPerPageChange} value={itemsPerPage} className=" border sm:border-2 rounded-md pl-1 text-primary sm:text-[20px] border-primary">
           <option value={5}>5</option>
