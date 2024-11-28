@@ -2,6 +2,9 @@ import { NumericFormat } from "react-number-format";
 import { useAddUserForm } from "../../lib/hooks/useAddUserForm"
 import Installment from "./Installment";
 import ExtraUsers from "./ExtraUsers";
+import InstallmentTable from "../InstallmentTable";
+import ExtraDataTable from "../ExtraDataTable";
+import MainTable from "../MainTable";
 
 const Form = () => {
     const {
@@ -12,8 +15,9 @@ const Form = () => {
         },
         
     } = useAddUserForm();
-
     
+    console.log('inital states : ', state);
+
 
   return (
     <div>
@@ -137,10 +141,14 @@ const Form = () => {
 
             
             {/* Installment Div  */}
-              <Installment />
+            <Installment />
 
             {/* Extra user Div  */}
-               <ExtraUsers />
+            <ExtraUsers />
+            
+            <InstallmentTable />
+            <ExtraDataTable />
+
 
             <div className='flex justify-center pt-4 gap-4' >
                 <button

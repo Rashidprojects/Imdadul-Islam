@@ -21,10 +21,11 @@ const MainTable = ({ isArea }) => {
     currentPage,
     itemsPerPage,
   )
-  
+
   // Update total items whenever filteredUsers changes
   useEffect(() => {
     setTotalItems(filteredUsers.length);
+
   }, [filteredUsers.length]);
 
 
@@ -60,79 +61,84 @@ const MainTable = ({ isArea }) => {
 };
 
   return (
-    <div className="overflow-auto rounded-lg shadow mx-5">
-      <div className='flex justify-center sm:justify-end items-center bg-primary'>
+    <div className='shadow mx-5'>
+      <div className='flex justify-center sm:justify-end items-center bg-primary rounded-t-lg'>
 
-        {/* Find signgle user input field */}
-        <div className= {` py-2 sm:pr-4 relative ${isArea !== '' ? 'flex' : 'hidden' } `} >
-          <NumericFormat  
-            placeholder='Enter House Number to Search'
-            onKeyDown={handleKeyPress}
-            onChange={(e) => setIsFind(e.target.value)}
-            className='border border-light bg-dark rounded-md w-[280px] sm:w-[320px] pl-2 pr-4 py-1 sm:py-2 sm:text-[18px] placeholder:text-primary ' />
-            <div 
-              onClick={handleFindUser}
-              className='absolute right-[10px] sm:right-[24px] bottom-[14px] px-1 sm:px-3 py-1  sm:py-2 rounded-md bg-secondary cursor-pointer z-10'>
-              <ImSearch className=' text-light sm:text-[18px]  ' />
-            </div>
-        </div>
+      {/* Find signgle user input field */}
+      <div className= {` py-2 sm:pr-4 relative ${isArea !== '' ? 'flex' : 'hidden' } `} >
+        <NumericFormat  
+          placeholder='Enter House Number to Search'
+          onKeyDown={handleKeyPress}
+          onChange={(e) => setIsFind(e.target.value)}
+          className='border border-light bg-dark rounded-md w-[280px] sm:w-[320px] pl-2 pr-4 py-1 sm:py-2 sm:text-[18px] placeholder:text-primary ' />
+          <div 
+            onClick={handleFindUser}
+            className='absolute right-[10px] sm:right-[24px] bottom-[14px] px-1 sm:px-3 py-1  sm:py-2 rounded-md bg-secondary cursor-pointer z-10'>
+            <ImSearch className=' text-light sm:text-[18px]  ' />
+          </div>
+      </div>
 
       </div>
-      {filteredUsers.length === 0 ? (
-        <p>No data found.</p>
-      ) : (
-        <table className="w-full">
-          <thead className="bg-primary text-light border-2 border-primary ">
-            <tr>
-              <th className="w-20 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">No.</th>
-              <th className="w-20 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Name</th>
-              <th className="w-32 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">House No.</th>
-              <th className="w-20 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Area Code</th>
-              <th className="w-24 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Address</th>
-              <th className="w-24 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Phone</th>
-              <th className="w-24 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Total</th>
-              <th className="w-24 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Received</th>
-              <th className="w-32 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Pending</th>
-            </tr>
-          </thead>
-          <tbody className="border-2 border-primary">
-            {currentData.map((item, index) => (
-              <tr
-                key={item.id}
-                className={`${(index + 1) % 2 === 0 ? 'bg-dark' : 'bg-table1'}`}
-              >
-                <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
-                  {index + 1}
-                </td>
-                <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
-                  {item.username}
-                </td>
-                <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap w-[30] ">
-                  {item.houseNumber}
-                </td>
-                <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
-                  {item.areaCode}
-                </td>
-                <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
-                  {item.address}
-                </td>
-                <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
-                  {item.mobile}
-                </td>
-                <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
-                  {item.totalAmount}
-                </td>
-                <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
-                  {item.received}
-                </td>
-                <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
-                  {/* Pending amount */}
-                </td>
+      <div className="overflow-auto rounded-b-lg">
+        
+        {filteredUsers.length === 0 ? (
+          <p>No data found.</p>
+        ) : (
+          <table className="w-full">
+            <thead className="bg-primary text-light border-2 border-primary ">
+              <tr>
+                <th className="w-20 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">No.</th>
+                <th className="w-20 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Name</th>
+                <th className="w-32 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">House No.</th>
+                <th className="w-20 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Area Code</th>
+                <th className="w-24 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Address</th>
+                <th className="w-24 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Phone</th>
+                <th className="w-24 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Total</th>
+                <th className="w-24 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Received</th>
+                <th className="w-32 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Pending</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+            <tbody className="border-2 border-primary">
+              {
+                currentData.map((item, index) => 
+              (
+                <tr
+                  key={item.id}
+                  className={`${(index + 1) % 2 === 0 ? 'bg-dark' : 'bg-table1'}`}
+                >
+                  <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
+                    {index + 1}
+                  </td>
+                  <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
+                    {item.username}
+                  </td>
+                  <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap w-[30] ">
+                    {item.houseNumber}
+                  </td>
+                  <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
+                    {item.areaCode}
+                  </td>
+                  <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
+                    {item.address}
+                  </td>
+                  <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
+                    {item.mobile}
+                  </td>
+                  <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
+                    {item.totalAmount}
+                  </td>
+                  <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
+                    {Number(item.totalReceived).toLocaleString('en-US')}
+                  </td>
+                  <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
+                    {Number(item.pending).toLocaleString('en-US')}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 };

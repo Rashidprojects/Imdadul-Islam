@@ -122,7 +122,6 @@ const AdduserForm = () => {
     }
   };
 
-  console.log('current load status : ', loading);
   
   return (
     <div className={` bg-primary ${ isExtraUser || isInstallment || isData ? 'h-auto' : 'h-screen' } px-3
