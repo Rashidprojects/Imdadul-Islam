@@ -7,15 +7,15 @@ const InstallmentTable = ({ onEditInstallment }) => {
     
 
   return (
-    <div className="overflow-auto rounded-lg shadow mx-5">
+    <div className="overflow-auto rounded-lg shadow mx-5 sm:w-[50%] mt-8">
         <table className="w-full ">
             <thead className="bg-primary text-light border-2 border-primary ">
             <tr>
-                <th className="w-20 p-2 text-[14px] sm:text-[18px] font-semibold tracking-wide text-left">Installment</th>
-                <th className="w-20 p-2 text-[14px] sm:text-[18px] font-semibold tracking-wide text-left">Date</th>
-                <th className="w-20 p-2 text-[12px] sm:text-[18px] font-semibold tracking-wide text-left">Reciept no.</th>
-                <th className="w-24 p-2 text-[14px] sm:text-[18px] font-semibold tracking-wide text-left">Recieved </th>
-                <th className="w-24 p-2 text-[14px] sm:text-[18px] font-semibold tracking-wide text-left">Action </th>
+                <th className="w-16 sm:w-20 px-1 sm:p-2 text-[12px] sm:text-[18px] font-light sm:font-semibold tracking-wide text-left">Installment</th>
+                <th className="w-16 sm:w-20 px-1 sm:p-2 text-[12px] sm:text-[18px] font-light sm:font-semibold tracking-wide text-left">Date</th>
+                <th className="w-16 sm:w-20 px-1 sm:p-2 text-[12px] sm:text-[18px] font-light sm:font-semibold tracking-wide text-left">Reciept no.</th>
+                <th className="w-16 sm:w-20 px-1 sm:p-2 text-[12px] sm:text-[18px] font-light sm:font-semibold tracking-wide text-left">Recieved </th>
+                <th className="w-16 sm:w-20 px-1 sm:p-2 text-[12px] sm:text-[18px] font-light sm:font-semibold tracking-wide text-left">Action </th>
             </tr>
             </thead>
 

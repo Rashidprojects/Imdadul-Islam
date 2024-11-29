@@ -37,16 +37,16 @@ const Pagination = () => {
           {Array.from({ length: totalPages }, (_, index) => index + 1).reduce((acc, page) => {
             // If there are more than 3 pages, apply custom logic
             if (totalPages > 3) {
-              // Always include the first 3 pages
-              if (page <= 3) {
+              // Always include the first 2 pages
+              if (page <= 2) {
                 acc.push(page);
               }
               // Add ellipsis if we're at the boundary
               else if (page === 4) {
                 acc.push('...');
               }
-              // Always include the last 3 pages
-              else if (page > totalPages - 3) {
+              // Always include the last 2 pages
+              else if (page > totalPages - 2) {
                 acc.push(page);
               }
             } else {

@@ -13,7 +13,7 @@ const initialState = {
   installment: { name: '', date: '', receiptNo: '', receivedAmount: '' },
   extraUsers: [],
   extraUser: { name: '', date: '', relation: '', receivedAmount: '' },
-  amountPaid: '',
+  subTotal: '',
   isInstallment: false,
   isExtraUser: false,
   isLoading: false,
@@ -36,7 +36,6 @@ const SET_ERROR = 'SET_ERROR';
 const formContextReducer = (state, action) => {
   switch (action.type) {
     case SET_FIELD:
-      console.log(`SET_FIELD called with field: ${action.field}, value: ${action.value}`);
       return { ...state, [action.field]: action.value };
     case SET_INSTALLMENT:
       return { ...state, installment: { ...state.installment, [action.name]: action.value } };

@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useForm } from "../providers/FormContext";
 import { submitFundData } from "../services/firestoreService";
+import { useNavigate } from "react-router-dom";
 
 export const useAddUserForm = () => {
   const { state, dispatch } = useForm();
   const [editIndex, setEditIndex] = useState(false);  
+  const [isData, setIsData] = useState(false)
+  const navigate = useNavigate()
 
-  console.log('hello from kdy : ', state.installments);
 
   const installmentSum = state.installments.reduce((sum, installment) => {
     const receivedAmount = installment.receivedAmount.replace(/,/g, '');
@@ -19,15 +21,29 @@ export const useAddUserForm = () => {
   }, 0);
 
   const totalRecieved = installmentSum + extraUsersSum
-  const pending = state.totalAmount.replace(/,/g, '') - totalRecieved
 
-  console.log('installment sum = ', pending);
+  const subTotal = 
+  (Number(state.totalAmount.replace(/,/g, '')) || 0) + 
+  (Number(extraUsersSum) || 0);
+  
+  console.log('subTotal : ', subTotal);
+  
+  console.log('total amount : ', state.totalAmount.replace(/,/g, ''));
+  console.log('total recieved : ', totalRecieved);  
+  
+  const pending = state.totalAmount.replace(/,/g, '') - installmentSum
 
+  console.log('current state is : ', state);
+  
   
   useEffect(() => {
     
     dispatch({ type: 'SET_FIELD', field: 'totalReceived', value: totalRecieved });
     dispatch({ type: 'SET_FIELD', field: 'pending', value: pending });
+    dispatch({ type: 'SET_FIELD', field: 'subTotal', value: subTotal });
+
+    console.log('total amount : ', state.totalAmount.replace(/,/g, ''));
+    console.log('total recieved : ', totalRecieved); 
 
 
   },[totalRecieved])
@@ -48,14 +64,13 @@ export const useAddUserForm = () => {
       return;
     }
     dispatch({ type: 'ADD_INSTALLMENT' });
-    updateTotalReceived(); // Recalculate total after adding an installment
     setEditIndex(false);
+    setIsData(true)
   };
 
   const handleIsInstallment = () => {
     const newValue = !state.isInstallment;
     dispatch({ type: 'SET_IS_INSTALLMENT', value: newValue })
-    console.log('Add Installment button clicked, isInstallment:', newValue); // Debugging log
   }
 
   const handleExtraUserChange = (e) => {
@@ -69,52 +84,31 @@ export const useAddUserForm = () => {
       return;
     }
     dispatch({ type: 'ADD_EXTRAUSER' });
-    updateTotalReceived(); // Recalculate total after adding an extra user
+    setIsData(true)
   };
 
   const handleIsExtraUser = () => {
     const newValue = !state.isExtraUser;
     dispatch({ type: 'SET_IS_EXTRAUSER', value: newValue })
-    console.log('Add Extra User button clicked, isExtraUser:', newValue); // Debugging log
   }
-
-  const calculateTotalReceived = (installments, extraUsers) => {
-    console.log('Installments:', installments);
-    console.log('Extra Users:', extraUsers);
-    const installmentSum = installments.reduce(
-      (sum, installment) => sum + (Number(installment.receivedAmount) || 0),
-      0
-    );
-    console.log('Installment Sum:', installmentSum);
-    const extraUserSum = extraUsers.reduce(
-      (sum, extraUser) => sum + (Number(extraUser.receivedAmount) || 0),
-      0
-    );
-    console.log('Extra User Sum:', extraUserSum);
-
-    return installmentSum + extraUserSum;
-  };
-
-  const updateTotalReceived = () => {
-    console.log('Calling calculateTotalReceived...');
-    const total = calculateTotalReceived(state.installments, state.extraUsers);
-    console.log('Total Received:', total);
-    dispatch({ type: 'SET_FIELD', field: 'totalReceived', value: total });
-  };
   
 
   const handleSubmit = async (e) => {
+    if (!state.username || !state.houseNumber || !state.areaCode) {
+        alert('Please fill out all the user fields.');
+      return;
+    }
     e.preventDefault();
     dispatch({ type: 'SET_LOADING', value: true });
 
     try {
       await submitFundData(state);
-      alert('Data submitted successfully!');
       dispatch({ type: 'RESET_FORM' });
     } catch (error) {
       dispatch({ type: 'SET_ERROR', value: error.message });
     } finally {
       dispatch({ type: 'SET_LOADING', value: false });
+      navigate('/user-dashboard')
     }
   };
 
@@ -130,6 +124,6 @@ export const useAddUserForm = () => {
       handleAddExtraUser,
       handleSubmit,
     },
-    uiState: { editIndex },
+    uiState: { editIndex, isData },
   };
 };

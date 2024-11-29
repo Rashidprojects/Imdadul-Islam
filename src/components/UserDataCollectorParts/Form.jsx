@@ -4,7 +4,6 @@ import Installment from "./Installment";
 import ExtraUsers from "./ExtraUsers";
 import InstallmentTable from "../InstallmentTable";
 import ExtraDataTable from "../ExtraDataTable";
-import MainTable from "../MainTable";
 
 const Form = () => {
     const {
@@ -16,12 +15,10 @@ const Form = () => {
         
     } = useAddUserForm();
     
-    console.log('inital states : ', state);
-
 
   return (
     <div>
-        <div>
+        <div className="w-full flex justify-center items-center ">
             <form  className='pt-1 md:pt-10 sm:w-[85%]'>
             <div className='flex flex-col sm:flex-row justify-center items-center gap-4 my-4'>
                 <div className='w-[75%] sm:w-full'>
@@ -145,12 +142,18 @@ const Form = () => {
 
             {/* Extra user Div  */}
             <ExtraUsers />
+
             
-            <InstallmentTable />
-            <ExtraDataTable />
+            {/* flex flex-col */}
+            <div className="sm:flex w-full ">
+                {state.installments.length > 0 && <InstallmentTable  /> }
+
+                {state.extraUsers.length > 0 && <ExtraDataTable /> }
+                
+            </div>
 
 
-            <div className='flex justify-center pt-4 gap-4' >
+            <div className='flex justify-center pt-20 gap-4' >
                 <button
                 type="submit"
                 onClick={handleSubmit}
