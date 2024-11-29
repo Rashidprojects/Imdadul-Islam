@@ -16,7 +16,6 @@ const Installment = () => {
         }
     } = useAddUserForm();
 
-    console.log('in installment :', state.installments.length);
     
     
 

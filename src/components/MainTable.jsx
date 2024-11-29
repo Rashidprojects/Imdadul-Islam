@@ -4,13 +4,18 @@ import { usePagination } from '../lib/providers/PaginationContext';
 import { useFilteredUsers } from '../lib/hooks/useFilteredUsers';
 import { NumericFormat } from 'react-number-format';
 import { ImSearch } from "react-icons/im";
+import { MdPersonSearch } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 const MainTable = ({ isArea }) => {
-  const { state: userState, fetchUsers } = useUserData();
+  const { state: userState, fetchUsers, setEditingUser } = useUserData();
   const { state, setTotalItems } = usePagination();
   const { currentPage, itemsPerPage } = state;
+  const navigate = useNavigate()
 
   const [isFind, setIsFind] = useState('')
+
 
   
 
@@ -96,6 +101,7 @@ const MainTable = ({ isArea }) => {
                 <th className="w-24 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Total</th>
                 <th className="w-24 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Received</th>
                 <th className="w-32 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Pending</th>
+                <th className="w-32 p-2 text-[18px] sm:text-[22px] font-normal tracking-wide text-left">Actions</th>
               </tr>
             </thead>
             <tbody className="border-2 border-primary">
@@ -107,7 +113,7 @@ const MainTable = ({ isArea }) => {
                   className={`${(index + 1) % 2 === 0 ? 'bg-dark' : 'bg-table1'}`}
                 >
                   <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
-                    {index + 1}
+                    {(currentPage - 1) * itemsPerPage + index + 1}
                   </td>
                   <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
                     {item.username}
@@ -125,7 +131,7 @@ const MainTable = ({ isArea }) => {
                     {item.mobile}
                   </td>
                   <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
-                    {item.totalAmount}
+                    {Number(item.subTotal).toLocaleString('en-US')}
                   </td>
                   <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
                     {Number(item.totalReceived).toLocaleString('en-US')}
@@ -133,9 +139,22 @@ const MainTable = ({ isArea }) => {
                   <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
                     {Number(item.pending).toLocaleString('en-US')}
                   </td>
+                  <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
+                    <div className='flex gap-7 items-center'>
+                      <div >
+                        <MdPersonSearch className='text-[29px] cursor-pointer' />
+                      </div>
+                      <div onClick={() => {
+                        setEditingUser(item)
+                        navigate('/edit')
+                      } }>
+                        <FaEdit className='text-[22px] cursor-pointer' />
+                      </div>
+                    </div>
+                  </td>
                 </tr>
               ))}
-            </tbody>
+            </tbody> 
           </table>
         )}
       </div>

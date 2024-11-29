@@ -6,10 +6,16 @@ import MainTable from "../../components/MainTable"
 import CustomSelect from "../../components/Dashboard/CustomSelect"
 import { useUserData } from "../../lib/providers/UserDataContext"
 import Loading from "../../components/Loading"
+import { usePagination } from "../../lib/providers/PaginationContext"
 
 const Dashboard = () => {
     const { state: userState } = useUserData();
     const navigate = useNavigate()
+    const { state } = usePagination()
+
+    const items = state.itemsPerPage
+    console.log('items per page : ', items);
+    
 
     const [isArea, setIsArea] = useState('')
     const [resetSelect, setResetSelect] = useState(false);
@@ -26,8 +32,8 @@ const Dashboard = () => {
   };
     
   return (
-    <div className={`bg-primary h-auto pt-7 px-2`}> 
-       <div className="bg-light h-screen rounded-xl">
+    <div className={`bg-primary ${items > 10 ? 'h-auto' : 'h-screen' } pt-7 px-2 pb-4`}> 
+       <div className={`bg-light ${items > 10 ? 'h-auto' : 'h-[100%]' } rounded-xl `}>
         <h1 className="text-center text-2xl sm:text-3xl p-5 font-semibold">
             Welcome to Admin Dashboard!.
         </h1>  
