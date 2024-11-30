@@ -2,11 +2,11 @@ import { useNavigate } from "react-router-dom"
 import Pagination from "../../components/Pagination"
 import CheckData from "../../components/CheckData"
 import { useState } from "react"
-import MainTable from "../../components/MainTable"
 import CustomSelect from "../../components/Dashboard/CustomSelect"
 import { useUserData } from "../../lib/providers/UserDataContext"
 import Loading from "../../components/Loading"
 import { usePagination } from "../../lib/providers/PaginationContext"
+import MainTable from "../../components/Dashboard/MainTable"
 
 const Dashboard = () => {
     const { state: userState } = useUserData();
@@ -32,8 +32,8 @@ const Dashboard = () => {
   };
     
   return (
-    <div className={`bg-primary ${items > 10 ? 'h-auto' : 'h-screen' } pt-7 px-2 pb-4`}> 
-       <div className={`bg-light ${items > 10 ? 'h-auto' : 'h-[100%]' } rounded-xl `}>
+    <div className={`bg-primary ${items > 5 ? 'h-auto' : 'h-screen' } pt-7 px-2 pb-4`}> 
+       <div className={`bg-light ${items > 5 ? 'h-auto' : 'h-[100%]' } rounded-xl `}>
         <h1 className="text-center text-2xl sm:text-3xl p-5 font-semibold">
             Welcome to Admin Dashboard!.
         </h1>  

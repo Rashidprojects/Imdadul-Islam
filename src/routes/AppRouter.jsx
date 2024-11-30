@@ -3,7 +3,6 @@ import Admin from "../app/admin/Admin"
 import Dashboard from "../app/admin/Dashboard"
 import Home from "../app/(landingPage)/Home"
 import ProtectedRoute from "./ProtectedRoute"
-import AddUser from "../app/admin/AddUser"
 import EditData from "../components/EditData"
 import UserCollector from "../app/admin/UserCollector"
 
