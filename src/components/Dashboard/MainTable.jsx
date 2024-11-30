@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useUserData } from '../lib/providers/UserDataContext';
-import { usePagination } from '../lib/providers/PaginationContext';
-import { useFilteredUsers } from '../lib/hooks/useFilteredUsers';
+import { usePagination } from '../../lib/providers/PaginationContext';
+import { useFilteredUsers } from '../../lib/hooks/useFilteredUsers';
 import { NumericFormat } from 'react-number-format';
 import { ImSearch } from "react-icons/im";
 import { MdPersonSearch } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import { useUserData } from '../../lib/providers/UserDataContext';
 
 const MainTable = ({ isArea }) => {
   const { state: userState, fetchUsers, setEditingUser } = useUserData();
@@ -141,7 +141,10 @@ const MainTable = ({ isArea }) => {
                   </td>
                   <td className="p-2 text-[18px] sm:text-[22px] text-gray-700 whitespace-nowrap">
                     <div className='flex gap-7 items-center'>
-                      <div >
+                      <div onClick={() => {
+                        setEditingUser(item)
+                        navigate('/view-profile')
+                      }} >
                         <MdPersonSearch className='text-[29px] cursor-pointer' />
                       </div>
                       <div onClick={() => {
@@ -151,7 +154,7 @@ const MainTable = ({ isArea }) => {
                         <FaEdit className='text-[22px] cursor-pointer' />
                       </div>
                     </div>
-                  </td>
+                    </td>
                 </tr>
               ))}
             </tbody> 

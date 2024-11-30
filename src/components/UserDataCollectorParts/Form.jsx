@@ -2,8 +2,8 @@ import { NumericFormat } from "react-number-format";
 import { useAddUserForm } from "../../lib/hooks/useAddUserForm"
 import Installment from "./Installment";
 import ExtraUsers from "./ExtraUsers";
-import InstallmentTable from "../InstallmentTable";
-import ExtraDataTable from "../ExtraDataTable";
+import InstallmentTable from "./InstallmentTable";
+import ExtraDataTable from "./ExtraDataTable";
 
 const Form = () => {
     const {
