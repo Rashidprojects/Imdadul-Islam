@@ -22,14 +22,14 @@ const ProfileView = () => {
           <AdminNav currentSection="Add User" />
 
 
-        <div className={` bg-primary px-3 py-5 ${isUser?.installments.length > 3 || isUser?.extraUsers.length > 3 ? 'h-auto' : 'h-screen' } w-full flex justify-center `}>
+        <div className={` bg-primary px-3 py-5 ${isUser?.installments.length > 3 || isUser?.extraUsers.length > 3 ? 'h-auto' : 'h-auto' } w-full flex justify-center `}>
 
-            <div className=" bg-light rounded-md p-8 w-full sm:w-[50%]">
+            <div className=" bg-light rounded-md p-8 w-full sm:w-[60%] sm:px-40 ">
                 
                 <div className="w-full">
                     <div className="flex justify-start ">
                         <h2 className="text-[26px]  sm:text-4xl font-semibold text-green-950">
-                            {isUser?.username} mohammed aslma bai
+                            {isUser?.username}
                         </h2>
                     </div>
                     <div className="pt-1 ">
@@ -83,7 +83,7 @@ const ProfileView = () => {
                             isUser && isUser.extraUsers.map((inst, index) => (
                             <>
                               <div key={index} className="flex list-none gap-5 sm:gap-28 bg-dark border border-primary px-4 sm:px-8 py-3 rounded-md text-[18px] sm:text-[20px] my-2 sm:font-semibold w-full overflow-auto">
-                                <li > helo {inst.name} kloiijj jjj</li>
+                                <li > {inst.name}</li>
                                 <li>{inst.relation}</li>
                                 <li>{inst.date}</li>
                                 <li>{inst.receivedAmount}</li>

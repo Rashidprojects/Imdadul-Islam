@@ -3,12 +3,14 @@ import { fetchFundData, updateFundData, deleteFundData } from '../services/fires
 
 const initialState = {
   users: [],
+  currentData: [],
   loading: false,
   error: null,
   editingUser: null, // Add the editingUser state here
 };
 
 const FETCH_USERS = 'FETCH_USERS';
+const CURRENT_DATA = 'CURRENT_DATA'; 
 const SET_LOADING = 'SET_LOADING';
 const SET_ERROR = 'SET_ERROR';
 const UPDATE_USER = 'UPDATE_USER';
@@ -19,6 +21,8 @@ const userReducer = (state, action) => {
   switch (action.type) {
     case FETCH_USERS:
       return { ...state, users: action.payload, loading: false };
+    case CURRENT_DATA:
+      return { ...state, currentData: action.payload }
     case SET_LOADING:
       return { ...state, loading: action.payload };
     case SET_ERROR:
@@ -91,7 +95,7 @@ export const UserDataProvider = ({ children }) => {
 
   return (
     <UserDataContext.Provider
-      value={{ state, updateUser, fetchUsers, deleteUser, setEditingUser }} // Add setEditingUser to the context
+      value={{ state, dispatch, updateUser, fetchUsers, deleteUser, setEditingUser }} // Add setEditingUser to the context
     >
       {children}
     </UserDataContext.Provider>
