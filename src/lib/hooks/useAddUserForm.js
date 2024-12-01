@@ -1,14 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "../providers/FormContext";
 import { submitFundData } from "../services/firestoreService";
 import { useNavigate } from "react-router-dom";
+import { useUserData } from "../providers/UserDataContext";
 
 export const useAddUserForm = () => {
   const { state, dispatch } = useForm();
+  const { updateUser } = useUserData()
+
   const [editIndex, setEditIndex] = useState(false);  
   const [isData, setIsData] = useState(false)
   const navigate = useNavigate()
 
+  const stateRef = useRef(state)
+
+  useEffect(() => {
+    stateRef.current = state
+  },[state])
+
+  console.log('useRefed state value : ', stateRef.current.totalAmount);
+  
+  
+  
 
   const installmentSum = state.installments.reduce((sum, installment) => {
     const receivedAmount = installment.receivedAmount.replace(/,/g, '');
@@ -28,25 +41,21 @@ export const useAddUserForm = () => {
   
   console.log('subTotal : ', subTotal);
   
-  console.log('total amount : ', state.totalAmount.replace(/,/g, ''));
-  console.log('total recieved : ', totalRecieved);  
+  console.log('total amount on add form : ', state.totalAmount.replace(/,/g, ''));
+  console.log('total recieved on add form : ', totalRecieved);  
   
   const pending = state.totalAmount.replace(/,/g, '') - installmentSum
 
   console.log('current state is : ', state);
   
-  
-  useEffect(() => {
-    
-    dispatch({ type: 'SET_FIELD', field: 'totalReceived', value: totalRecieved });
-    dispatch({ type: 'SET_FIELD', field: 'pending', value: pending });
-    dispatch({ type: 'SET_FIELD', field: 'subTotal', value: subTotal });
+  dispatch({ type: 'SET_FIELD', field: 'totalReceived', value: totalRecieved });
+  dispatch({ type: 'SET_FIELD', field: 'pending', value: pending });
+  dispatch({ type: 'SET_FIELD', field: 'subTotal', value: subTotal });
 
-    console.log('total amount : ', state.totalAmount.replace(/,/g, ''));
-    console.log('total recieved : ', totalRecieved); 
+  console.log('total amount on add form : ', state.totalAmount.replace(/,/g, ''));
+  console.log('total recieved : ', totalRecieved); 
 
 
-  },[totalRecieved])
 
   const handleFieldChange = (e) => {
     const { name, value } = e.target;

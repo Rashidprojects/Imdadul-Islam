@@ -16,11 +16,12 @@ const MainTable = ({ isArea }) => {
 
   const [isFind, setIsFind] = useState('')
 
-
+  console.log('is anything have in current data : ', userState.currentData);
+  
   
 
   // Custom hook to manage filtered users and pagination
-  const { filteredUsers, currentData, setFilteredUsers } = useFilteredUsers(
+  const { filteredUsers, setFilteredUsers } = useFilteredUsers(
     userState.users,
     isArea,
     currentPage,
@@ -106,7 +107,7 @@ const MainTable = ({ isArea }) => {
             </thead>
             <tbody className="border-2 border-primary">
               {
-                currentData.map((item, index) => 
+                userState?.currentData?.map((item, index) => 
               (
                 <tr
                   key={item.id}

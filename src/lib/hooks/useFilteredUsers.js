@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react"
+import { useUserData } from "../providers/UserDataContext";
 
 export const useFilteredUsers = (users, areaCode, currentPage, itemsPerPage) => {
     const [filteredUsers, setFilteredUsers] = useState([]);
+    const { dispatch } = useUserData()
+
 
     useEffect(() => {
         let filtered = users;
@@ -14,20 +17,20 @@ export const useFilteredUsers = (users, areaCode, currentPage, itemsPerPage) => 
         }
 
         setFilteredUsers(filtered)
-
-        console.log('all users : ', users);
         
     }, [users, areaCode])
 
+    useEffect(() => {
+        const indexOfLastItem = currentPage * itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        const currentData = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
+    
+        dispatch({ type: 'CURRENT_DATA', payload: currentData });
+        console.log('filtered current data passed: ', currentData);
+    }, [filteredUsers, currentPage, itemsPerPage, dispatch]);
     
 
-    // Pagination logic
-    const indexOfLastItem = currentPage * itemsPerPage;
-    //   lastItem = 2 * 5 = 10
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    // firstItem = 10 - 5 = 5
-    const currentData = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
-    // slice data => slice(5, 10) o/p => [6,7,8,9,10]
+    
 
-    return { filteredUsers, currentData, setFilteredUsers }
+    return { filteredUsers, setFilteredUsers }
 }

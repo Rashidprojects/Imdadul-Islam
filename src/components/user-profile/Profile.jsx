@@ -24,7 +24,7 @@ const ProfileView = () => {
 
         <div className={` bg-primary px-3 py-5 ${isUser?.installments.length > 3 || isUser?.extraUsers.length > 3 ? 'h-auto' : 'h-auto' } w-full flex justify-center `}>
 
-            <div className=" bg-light rounded-md p-8 w-full sm:w-[50%]">
+            <div className=" bg-light rounded-md p-8 w-full sm:w-[60%] sm:px-40 ">
                 
                 <div className="w-full">
                     <div className="flex justify-start ">
