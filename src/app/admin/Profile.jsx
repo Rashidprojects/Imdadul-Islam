@@ -1,7 +1,10 @@
+import ProfileView from "../../components/user-profile/Profile"
 
 const Profile = () => {
   return (
-    <div>Profile</div>
+    <div>
+        <ProfileView />
+    </div>
   )
 }
 

@@ -5,6 +5,7 @@ import Home from "../app/(landingPage)/Home"
 import ProtectedRoute from "./ProtectedRoute"
 import EditData from "../components/EditData"
 import UserCollector from "../app/admin/UserCollector"
+import Profile from "../app/admin/Profile"
 
 const AppRouter = () => {
   return (
@@ -16,6 +17,7 @@ const AppRouter = () => {
           <Route path='user-dashboard' element={ <ProtectedRoute> <Dashboard /> </ProtectedRoute>} />
           <Route path='add-user' element={ <ProtectedRoute> <UserCollector /> </ProtectedRoute>} />
           <Route path='edit' element={ <ProtectedRoute> <EditData /> </ProtectedRoute>} />
+          <Route path='view-profile' element={ <ProtectedRoute> <Profile /> </ProtectedRoute>} />
         </Routes>
     </div>
   )
