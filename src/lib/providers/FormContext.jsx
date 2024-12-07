@@ -24,6 +24,7 @@ const SET_FIELD = 'SET_FIELD';
 const SET_INSTALLMENT = 'SET_INSTALLMENT';
 const ADD_INSTALLMENT = 'ADD_INSTALLMENT';
 const EDIT_INSTALLMENT = 'EDIT_INSTALLMENT';
+const REMOVE_INSTALLMENT = 'REMOVE_INSTALLMENT';
 const SET_EXTRAUSER = 'SET_EXTRAUSER';
 const ADD_EXTRAUSER = 'ADD_EXTRAUSER';
 const EDIT_EXTRAUSER = 'EDIT_EXTRAUSER';
@@ -50,6 +51,12 @@ const formContextReducer = (state, action) => {
         ...state,
         installment: state.installments[action.index],
         installments: state.installments.filter((_, i) => i !== action.index),
+      };
+    case REMOVE_INSTALLMENT:
+      return {
+        
+        ...state,
+        installments: state.installments.filter((_, i) => i !== action.index )
       };
     case SET_EXTRAUSER:
       return { ...state, extraUser: { ...state.extraUser, [action.name]: action.value } };

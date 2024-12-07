@@ -2,12 +2,17 @@ import { useState, useEffect } from 'react';
 import { useUserData } from '../lib/providers/UserDataContext';
 import { NumericFormat } from 'react-number-format';
 import { useForm } from '../lib/providers/FormContext';
+import { useUpdatedAmounts } from '../lib/hooks/useEditingUser';
+import Installment from './UserDataCollectorParts/Installment';
 
 const EditData = () => {
   const { state, updateUser } = useUserData();
   const { state: formState, dispatch } = useForm();
 
   const [formData, setFormData] = useState(null);
+
+
+  useUpdatedAmounts(formData)
 
   // Set form data when editingUser is available
   useEffect(() => {
@@ -29,8 +34,12 @@ const EditData = () => {
     }
   };
 
-  const handleEditInstallment = (index) => {
-    dispatch({ type: 'EDIT_INSTALLMENT', index });
+  const handleDeleteInstallment = (index) => {
+    dispatch({ type: 'REMOVE_INSTALLMENT', index });
+    setFormData((prevData) => ({
+      ...prevData,
+      installments: prevData.installments.filter((_, i) => i !== index)
+    }))
   };
 
 
@@ -99,11 +108,20 @@ const EditData = () => {
         />
       </div>
 
+      <div>
+        <h1>Installment custom edit :- </h1>
+
+        <input type="text"  
+          name="date"
+          value={formData?.installment?.date} />
+      </div>
+
+
       {formData && console.log(formData.installments)}  {/* Add this to log the whole array */}
         <h3>Installments:</h3>
         <ul>
         {
-            formData && formData.installments.map((inst, index) => (
+            formData && formData?.installments.map((inst, index) => (
               <>
                 <li key={index}>
                     {inst.name} - {inst.date} - {inst.receiptNo} - {inst.receivedAmount}
@@ -111,19 +129,15 @@ const EditData = () => {
                 <button
                     type='button'
                     className='bg-primary text-light px-3 py-2 rounded-md font-medium text-[15px] md:text-[18px]'
-                    onClick={() => handleEditInstallment(index)}
+                    onClick={() => handleDeleteInstallment(index)}
                 >
-                    Edit
+                    Delete
                 </button>
               </>
             ))
         }
         </ul>
 
-
-            
-            
-        
 
       <button type="submit">Update</button>
     </form>

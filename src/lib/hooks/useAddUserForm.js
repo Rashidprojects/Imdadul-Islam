@@ -1,26 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "../providers/FormContext";
 import { submitFundData } from "../services/firestoreService";
 import { useNavigate } from "react-router-dom";
-import { useUserData } from "../providers/UserDataContext";
 
 export const useAddUserForm = () => {
   const { state, dispatch } = useForm();
-  const { updateUser } = useUserData()
 
   const [editIndex, setEditIndex] = useState(false);  
   const [isData, setIsData] = useState(false)
   const navigate = useNavigate()
-
-  const stateRef = useRef(state)
-
-  useEffect(() => {
-    stateRef.current = state
-  },[state])
-
-  console.log('useRefed state value : ', stateRef.current.totalAmount);
-  
-  
   
 
   const installmentSum = state.installments.reduce((sum, installment) => {
@@ -46,11 +34,14 @@ export const useAddUserForm = () => {
   
   const pending = state.totalAmount.replace(/,/g, '') - installmentSum
 
-  console.log('current state is : ', state);
+  console.log('current state is : ', state); 
   
-  dispatch({ type: 'SET_FIELD', field: 'totalReceived', value: totalRecieved });
-  dispatch({ type: 'SET_FIELD', field: 'pending', value: pending });
-  dispatch({ type: 'SET_FIELD', field: 'subTotal', value: subTotal });
+  useEffect(() => {
+    dispatch({ type: 'SET_FIELD', field: 'totalReceived', value: totalRecieved });
+    dispatch({ type: 'SET_FIELD', field: 'pending', value: pending });
+    dispatch({ type: 'SET_FIELD', field: 'subTotal', value: subTotal });
+  },[totalRecieved, pending, subTotal])
+  
 
   console.log('total amount on add form : ', state.totalAmount.replace(/,/g, ''));
   console.log('total recieved : ', totalRecieved); 
@@ -68,7 +59,7 @@ export const useAddUserForm = () => {
   };
 
   const handleAddInstallment = () => {
-    if (!state.installment.name || !state.installment.date) {
+    if ( !state.installment.date || !state.installment.receivedAmount) { 
       alert('Complete all installment fields.');
       return;
     }
@@ -76,6 +67,11 @@ export const useAddUserForm = () => {
     setEditIndex(false);
     setIsData(true)
   };
+
+  const handleEditInstallment = (index) => {
+    setEditIndex(true);
+    dispatch({ type: 'EDIT_INSTALLMENT', index })
+  }
 
   const handleIsInstallment = () => {
     const newValue = !state.isInstallment;
@@ -128,6 +124,7 @@ export const useAddUserForm = () => {
       handleIsInstallment,
       handleInstallmentChange,
       handleAddInstallment,
+      handleEditInstallment,
       handleIsExtraUser,
       handleExtraUserChange,
       handleAddExtraUser,

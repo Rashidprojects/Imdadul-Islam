@@ -1,8 +1,17 @@
+import { useAddUserForm } from "../../lib/hooks/useAddUserForm";
 import { useForm } from "../../lib/providers/FormContext";
 import { FaEdit } from "react-icons/fa";
 
-const InstallmentTable = ({ onEditInstallment }) => {
+const InstallmentTable = () => {
     const { state } = useForm();
+    const {
+        handlers: { handleEditInstallment }
+    } = useAddUserForm();
+
+    const onEditInstallment = (index) => {
+        handleEditInstallment(index)
+    }
+
     console.log('state of installments : ', state.installments);
     
 
@@ -23,7 +32,7 @@ const InstallmentTable = ({ onEditInstallment }) => {
             {state.installments.map((item, index) => (
                 <tr key={item.id} className={`${index % 2 === 0 ? 'bg-dark' : 'bg-table1'}`}>
                 <td className="p-3 text-[14px] sm:text-xl text-gray-700 whitespace-nowrap">
-                    <a href="#" className="font-medium text-secondary hover:underline">{item.name}</a>
+                    <a href="#" className="font-medium text-secondary hover:underline">Installment {index + 1}</a>
                 </td>
                 <td className="p-3 text-[14px] sm:text-xl text-gray-700 whitespace-nowrap">
                     <a href="#" className="font-medium text-secondary hover:underline">{item.date}</a>
